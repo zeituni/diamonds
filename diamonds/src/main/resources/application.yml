@@ -28,8 +28,8 @@ diamonds:
   host: localhost
   base-url: http://${diamonds.host}:${server.port}
   datasource:
-    username: ttc # Do not specify DB username here otherwise application-{env} value is not used
-    password: TTCttc123 # Do not specify DB password here otherwise application-{env} value is not used
+    username:  # Do not specify DB username here otherwise application-{env} value is not used
+    password:  # Do not specify DB password here otherwise application-{env} value is not used
     host: diamonds.cuxzhrkwjjdy.us-east-1.rds.amazonaws.com
     port: 3306
     schema: diamonds
