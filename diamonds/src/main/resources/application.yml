@@ -49,8 +49,8 @@ aws:
   region: us-east-1
   credentials:
     access:
-       key: AKIAJW6J66J7W4LXSA4A
+       key: 
     secret:
-       key: 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
+       key: 
   server:
       timezone: America/New_York
