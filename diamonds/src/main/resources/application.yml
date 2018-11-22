@@ -30,7 +30,7 @@ diamonds:
   datasource:
     username:  # Do not specify DB username here otherwise application-{env} value is not used
     password:  # Do not specify DB password here otherwise application-{env} value is not used
-    host: diamonds.cuxzhrkwjjdy.us-east-1.rds.amazonaws.com
+    host: localhost
     port: 3306
     schema: diamonds
     jdbc-url: jdbc:mysql://${diamonds.datasource.host}:${diamonds.datasource.port}/${diamonds.datasource.schema}?autoReconnect=true&useSSL=false
