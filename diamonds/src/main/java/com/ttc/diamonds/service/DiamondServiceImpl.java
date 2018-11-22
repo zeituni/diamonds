@@ -62,7 +62,8 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Override
     public List<JewelryDTO> findJewelryByManufacturer(long manufacturerId) {
-        List<Jewelry> jewelryList = jewelryRepository.findByManufacturer(manufacturerId);
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        List<Jewelry> jewelryList = jewelryRepository.findByManufacturer(manufacturer);
         if (jewelryList == null || jewelryList.size() == 0) {
             return null;
         } else {
