@@ -38,7 +38,6 @@ public class AppController {
         } else {
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "findJewelryByManufacturer")
@@ -64,9 +63,9 @@ public class AppController {
             return new ResponseEntity<>("Jewelry with this barcode already exists!", HttpStatus.CONFLICT);
         }
         if (diamondsService.addJewelry(jewelryDTO, video)) {
-            return new ResponseEntity<>("Jewelry added successfully", HttpStatus.OK);
+            return new ResponseEntity<>("{\"result_text\": \"Jewelry added successfully\"}", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Problem adding jewelry", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("{\"result_text\": \"Problem adding jewelry\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
