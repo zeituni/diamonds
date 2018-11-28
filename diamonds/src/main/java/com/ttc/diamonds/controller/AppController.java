@@ -9,10 +9,7 @@ import com.ttc.diamonds.service.DiamondsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,11 +22,13 @@ public class AppController {
     @Autowired
     private DiamondsService diamondsService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.GET, value = "/manufacturers")
     public ResponseEntity<List<ManufacturerDTO>> getManufacturers(){
         return new ResponseEntity<>(diamondsService.getAllManufacturers(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.GET, value = "/findJewelry")
     public ResponseEntity<JewelryDTO> findByBarcode(@RequestParam String barcode) {
         JewelryDTO dto = diamondsService.findByBarcode(barcode);
@@ -40,6 +39,7 @@ public class AppController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.GET, value = "findJewelryByManufacturer")
     public ResponseEntity<List<JewelryDTO>> findJewelryByManufacturer(@RequestParam long manufacturerId) {
         List<JewelryDTO> jewelryList = diamondsService.findJewelryByManufacturer(manufacturerId);
@@ -50,6 +50,7 @@ public class AppController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(method = RequestMethod.POST, value = "addJewelry")
     public ResponseEntity<String> addJewelry(@RequestParam("jewelryDto") String jewelry, @RequestParam("file")MultipartFile video) {
         ObjectMapper mapper = new ObjectMapper();
