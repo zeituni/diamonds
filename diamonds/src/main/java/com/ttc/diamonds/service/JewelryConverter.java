@@ -14,7 +14,7 @@ public class JewelryConverter {
         dto.setAdditionalInfo(jewelry.getAdditionalInfo());
         dto.setManufacturer(jewelry.getManufacturer().getId());
         dto.setCreationDate(jewelry.getCreationDate());
-        dto.setVideoLink("https://s3.console.aws.amazon.com/s3/buckets/ttc-diamonds/" + jewelry.getVideo());
+        dto.setVideoLink("https://s3.amazonaws.com/" + jewelry.getVideo());
         return dto;
     }
 

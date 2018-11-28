@@ -61,7 +61,7 @@ public class AmazonS3Util {
 
             LOGGER.info(String.format("video %s has been uploaded to AWS Bucket: %s ", s3FileName, "ttc-diamonds" + "/" + key));
 
-            return key;
+            return "ttc-diamonds/" + key;
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
