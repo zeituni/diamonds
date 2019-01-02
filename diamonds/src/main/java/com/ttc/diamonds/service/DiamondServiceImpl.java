@@ -1,9 +1,12 @@
 package com.ttc.diamonds.service;
 
+import com.ttc.diamonds.dto.CustomerDTO;
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.dto.ManufacturerDTO;
+import com.ttc.diamonds.model.Customer;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.Manufacturer;
+import com.ttc.diamonds.repository.CustomerRepository;
 import com.ttc.diamonds.repository.JewelryRepository;
 import com.ttc.diamonds.repository.ManufacturerRepository;
 import org.slf4j.Logger;
@@ -29,6 +32,9 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Autowired
     private AmazonS3Util amazonS3Util;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Value("${aws.credentials.access.key}")
     private String s3AccessKey;
@@ -91,6 +97,18 @@ public class DiamondServiceImpl implements DiamondsService {
             LOG.error(e.getMessage());
             return false;
         }
+    }
+
+    public List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId) {
+        List<CustomerDTO> toReturn = new ArrayList<>();
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        List<Customer> customers = customerRepository.findByManufacturer(manufacturer);
+        if (customers != null && !customers.isEmpty()) {
+            for (int i = 0; i < customers.size(); i++) {
+                toReturn.add(CustomerConverter.convertEntityToDto(customers.get(i)));
+            }
+        }
+        return toReturn;
     }
 
     private String extractFileSuffix(String video) {

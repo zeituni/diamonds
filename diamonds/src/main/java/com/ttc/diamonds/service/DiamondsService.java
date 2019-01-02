@@ -1,5 +1,6 @@
 package com.ttc.diamonds.service;
 
+import com.ttc.diamonds.dto.CustomerDTO;
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.dto.ManufacturerDTO;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,4 +15,6 @@ public interface DiamondsService {
     List<JewelryDTO> findJewelryByManufacturer(long manufacturerId);
 
     boolean addJewelry(JewelryDTO jewelryDTO, MultipartFile video);
+
+    List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId);
 }
