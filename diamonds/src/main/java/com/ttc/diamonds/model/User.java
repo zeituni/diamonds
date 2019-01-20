@@ -7,7 +7,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name="first_name")
     private String firstName;
+    @Column(name="last_name")
     private String lastName;
     private String username;
     private String password;
@@ -15,6 +17,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "store", referencedColumnName = "id")
     private Store store;
+    @ManyToOne
+    @JoinColumn(name = "manufacturer", referencedColumnName = "id")
+    private Manufacturer manufacturer;
 
     public String getFirstName() {
         return firstName;
@@ -62,5 +67,21 @@ public class User {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

@@ -24,13 +24,13 @@ public class AppController {
     @Autowired
     private DiamondsService diamondsService;
 
-    @CrossOrigin(origins = "http://${diamonds.host}:4200")
+    @CrossOrigin(origins = "http://${diamonds.host}:80")
     @RequestMapping(method = RequestMethod.GET, value = "/manufacturers")
     public ResponseEntity<List<ManufacturerDTO>> getManufacturers(){
         return new ResponseEntity<>(diamondsService.getAllManufacturers(), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://${diamonds.host}:4200")
+    @CrossOrigin(origins = "http://${diamonds.host}:80")
     @RequestMapping(method = RequestMethod.GET, value = "/findJewelry")
     public ResponseEntity<JewelryDTO> findByBarcode(@RequestParam String barcode) {
         JewelryDTO dto = diamondsService.findByBarcode(barcode);
@@ -41,7 +41,7 @@ public class AppController {
         }
     }
 
-    @CrossOrigin(origins = "http://${diamonds.host}:4200")
+    @CrossOrigin(origins = "http://${diamonds.host}:80")
     @RequestMapping(method = RequestMethod.GET, value = "findJewelryByManufacturer")
     public ResponseEntity<List<JewelryDTO>> findJewelryByManufacturer(@RequestParam long manufacturerId) {
         List<JewelryDTO> jewelryList = diamondsService.findJewelryByManufacturer(manufacturerId);
@@ -52,7 +52,7 @@ public class AppController {
         }
     }
 
-    @CrossOrigin(origins = "http://${diamonds.host}:4200")
+    @CrossOrigin(origins = "http://${diamonds.host}:80")
     @RequestMapping(method = RequestMethod.GET, value = "getCustomersByManufacturer")
     public ResponseEntity<List<CustomerDTO>> findCustomersByManufacturer(@RequestParam long manufacturerId) {
         List<CustomerDTO> customersList = diamondsService.getAllCustomersByManufacturer(manufacturerId);
@@ -60,7 +60,7 @@ public class AppController {
 
     }
 
-    @CrossOrigin(origins = "http://${diamonds.host}:4200")
+    @CrossOrigin(origins = "http://${diamonds.host}:80")
     @RequestMapping(method = RequestMethod.POST, value = "addJewelry")
     public ResponseEntity<String> addJewelry(@RequestParam("jewelryDto") String jewelry, @RequestParam("file")MultipartFile video) {
         ObjectMapper mapper = new ObjectMapper();
