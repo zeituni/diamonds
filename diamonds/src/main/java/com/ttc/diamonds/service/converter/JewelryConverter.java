@@ -1,4 +1,4 @@
-package com.ttc.diamonds.service;
+package com.ttc.diamonds.service.converter;
 
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.model.Jewelry;

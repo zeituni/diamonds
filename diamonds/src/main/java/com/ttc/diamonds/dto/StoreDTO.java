@@ -1,0 +1,58 @@
+package com.ttc.diamonds.dto;
+
+import java.util.Objects;
+
+public class StoreDTO {
+    private Long id;
+    private String name;
+    private String city;
+    private String state;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StoreDTO)) return false;
+        StoreDTO storeDTO = (StoreDTO) o;
+        return Objects.equals(getId(), storeDTO.getId()) &&
+                Objects.equals(getName(), storeDTO.getName()) &&
+                Objects.equals(getCity(), storeDTO.getCity()) &&
+                Objects.equals(getState(), storeDTO.getState());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getCity(), getState());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+}

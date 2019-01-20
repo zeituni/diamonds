@@ -21,6 +21,9 @@ public class Customer {
     private Jewelry jewelry;
     @Column(name = "creation_date")
     private Date creationDate;
+    @ManyToOne
+    @JoinColumn(name = "store", referencedColumnName = "id")
+    private Store store;
 
     public Date getCreationDate() {
         return creationDate;
@@ -76,5 +79,13 @@ public class Customer {
 
     public void setJewelry(Jewelry jewelry) {
         this.jewelry = jewelry;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

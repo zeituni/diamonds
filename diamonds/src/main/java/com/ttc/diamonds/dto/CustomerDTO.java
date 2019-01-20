@@ -13,6 +13,7 @@ public class CustomerDTO {
     private String phone;
     private String barcode;
     private String videoUrl;
+    private StoreDTO store;
 
     @Override
     public boolean equals(Object o) {
@@ -74,6 +75,14 @@ public class CustomerDTO {
 
     public String getVideoUrl() {
         return videoUrl;
+    }
+
+    public StoreDTO getStore() {
+        return store;
+    }
+
+    public void setStore(StoreDTO store) {
+        this.store = store;
     }
 
     public void setVideoUrl(String videoUrl) {
