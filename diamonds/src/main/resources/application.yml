@@ -23,13 +23,27 @@ spring:
         max-request-size: 100MB
         enabled: true
 
+security:
+    oauth2:
+      resource:
+        filter-order: 3
+    jwt:
+      client-id: diamonds-app
+      client-secret: shshshimhuntingwabit
+      grant-type: password
+      scope-read: read
+      scope-write: write
+      resource-ids: diamonds-app-resource-id
+    signing-key: MaYzkSjmkzPC57L
+    encoding-strength: 256
+    security-realm: Diamonds app realm
 
 diamonds:
   host: localhost
   base-url: http://${diamonds.host}:${server.port}
   datasource:
-    username:  # Do not specify DB username here otherwise application-{env} value is not used
-    password:  # Do not specify DB password here otherwise application-{env} value is not used
+    username:  root # Do not specify DB username here otherwise application-{env} value is not used
+    password:  1234 # Do not specify DB password here otherwise application-{env} value is not used
     host: localhost
     port: 3306
     schema: diamonds
@@ -49,8 +63,8 @@ aws:
   region: us-east-1
   credentials:
     access:
-       key: 
+      key: AKIAI4UG4EJ6G3LMDFMA
     secret:
-       key: 
+      key: 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
   server:
       timezone: America/New_York

@@ -5,17 +5,18 @@ import com.ttc.diamonds.dto.CustomerDTO;
 import com.ttc.diamonds.model.Customer;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.Manufacturer;
+import com.ttc.diamonds.model.Store;
 
 public class CustomerConverter {
 
-    public static Customer convertDtoToEntity(CustomerDTO dto, Manufacturer manufacturer, Jewelry jewelry) {
+    public static Customer convertDtoToEntity(CustomerDTO dto, Manufacturer manufacturer, Jewelry jewelry, Store store) {
         Customer toReturn = new Customer();
         toReturn.setName(dto.getName());
         toReturn.setPhone(dto.getPhone());
         toReturn.setEmail(dto.getEmail());
         toReturn.setManufacturer(manufacturer);
         toReturn.setJewelry(jewelry);
-        toReturn.setStore(StoreConverter.convertDtoToEntity(dto.getStore()));
+        toReturn.setUser(UserConverter.convertDtoToEntity(dto.getUser(), manufacturer, store));
         return toReturn;
     }
 
@@ -26,7 +27,7 @@ public class CustomerConverter {
         toReturn.setName(entity.getName());
         toReturn.setPhone(entity.getPhone());
         toReturn.setVideoUrl("https://s3.amazonaws.com/" + entity.getJewelry().getVideo());
-        toReturn.setStore(StoreConverter.convertEntityToDto(entity.getStore()));
+        toReturn.setUser(UserConverter.convertEntityToDto(entity.getUser()));
         return toReturn;
     }
 }

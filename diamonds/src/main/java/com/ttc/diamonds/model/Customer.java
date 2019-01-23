@@ -22,8 +22,8 @@ public class Customer {
     @Column(name = "creation_date")
     private Date creationDate;
     @ManyToOne
-    @JoinColumn(name = "store", referencedColumnName = "id")
-    private Store store;
+    @JoinColumn(name = "sales_person", referencedColumnName = "id")
+    private User user;
 
     public Date getCreationDate() {
         return creationDate;
@@ -81,11 +81,11 @@ public class Customer {
         this.jewelry = jewelry;
     }
 
-    public Store getStore() {
-        return store;
+    public User getUser() {
+        return user;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
