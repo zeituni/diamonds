@@ -39,7 +39,7 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
             statisticsRow.setUser(UserConverter.convertEntityToDto(user));
         }
         Long jewelryId = row.getLong("jewelry");
-        if (jewelryId != null) {
+        if (jewelryId != null && jewelryId > 0) {
             Jewelry jewelry = jewelryRepository.getOne(jewelryId);
             statisticsRow.setJewelryDTO(JewelryConverter.convertEntityToDTO(jewelry));
         }

@@ -31,4 +31,11 @@ public class StatisticsController {
     public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId) {
         return new ResponseEntity(statisticsService.getSalesPersonAllVideosSent(userId), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonVideosByDateRange")
+    public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId,
+                                                                       @RequestParam("from") String from,
+                                                                       @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getSalesPersonVideosSentByDate(userId, from, to), HttpStatus.OK);
+    }
 }

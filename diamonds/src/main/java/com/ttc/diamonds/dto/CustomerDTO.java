@@ -1,6 +1,7 @@
 package com.ttc.diamonds.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ public class CustomerDTO {
     private String phone;
     private String barcode;
     private String videoUrl;
+    @JsonProperty("sales_person")
     private UserDTO user;
 
     @Override

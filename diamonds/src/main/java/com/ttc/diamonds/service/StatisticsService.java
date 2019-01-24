@@ -18,4 +18,5 @@ public interface StatisticsService {
     List<StatisticsRow> getSalesPersonVideosSentByDay(Long userId, Date from, Date to);
 
 
+    Object getSalesPersonVideosSentByDate(Long userId, String from, String to);
 }

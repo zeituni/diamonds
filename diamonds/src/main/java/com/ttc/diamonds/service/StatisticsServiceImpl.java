@@ -33,4 +33,9 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<StatisticsRow> getSalesPersonVideosSentByDay(Long userId, Date from, Date to) {
         return null;
     }
+
+    @Override
+    public Object getSalesPersonVideosSentByDate(Long userId, String from, String to) {
+        return dao.getSalesPersonVideosSentByDate(userId, from, to);
+    }
 }

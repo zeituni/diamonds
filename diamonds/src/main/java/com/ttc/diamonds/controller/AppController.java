@@ -52,13 +52,6 @@ public class AppController {
         }
     }
 
-    @CrossOrigin(origins = "http://${diamonds.host}")
-    @RequestMapping(method = RequestMethod.GET, value = "getCustomersByManufacturer")
-    public ResponseEntity<List<CustomerDTO>> findCustomersByManufacturer(@RequestParam long manufacturerId) {
-        List<CustomerDTO> customersList = diamondsService.getAllCustomersByManufacturer(manufacturerId);
-        return new ResponseEntity<>(customersList, HttpStatus.OK);
-
-    }
 
     @CrossOrigin(origins = "http://${diamonds.host}")
     @RequestMapping(method = RequestMethod.POST, value = "addJewelry")
