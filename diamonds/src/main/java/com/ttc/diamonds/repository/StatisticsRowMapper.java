@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 
@@ -28,9 +29,9 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
     @Override
     public StatisticsRow mapRow(ResultSet row, int i) throws SQLException {
         StatisticsRow statisticsRow = new StatisticsRow();
-        Date rowDate = row.getDate("date");
+        Timestamp rowDate = row.getTimestamp("creation_date");
         statisticsRow.setDay(String.valueOf(extractFromDate(rowDate, Calendar.DAY_OF_MONTH)));
-        statisticsRow.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR)));
+        statisticsRow.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR_OF_DAY)));
         Long userId = row.getLong("user");
         if (userId != null) {
             User user = userRepository.getOne(userId);
@@ -45,9 +46,9 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
         return statisticsRow;
     }
 
-    private int extractFromDate(Date date, int field) {
+    private int extractFromDate(Timestamp date, int field) {
         Calendar calendar = new Calendar.Builder().build();
-        calendar.setTime(date);
+        calendar.setTimeInMillis(date.getTime());
         return calendar.get(field);
     }
 }

@@ -23,7 +23,7 @@ public class StatisticsDao {
 
     public List<StatisticsRow> getJewelryVideosByDate(Long jewelryId, String from, String to) {
 
-        String sql = "select c.jewelry, c.sales_person as user, c.creation_date as date, count(jewelry) as total " +
+        String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
                 "from customer c " +
                 "where c.jewelry = ? and creation_date between ? and ? " +
                 "group by date(creation_date)";
