@@ -63,8 +63,8 @@ aws:
   region: us-east-1
   credentials:
     access:
-      key: AKIAI4UG4EJ6G3LMDFMA
+      key: 
     secret:
-      key: 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
+      key: 
   server:
       timezone: America/New_York
