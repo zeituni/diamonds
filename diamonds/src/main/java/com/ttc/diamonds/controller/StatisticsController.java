@@ -26,4 +26,9 @@ public class StatisticsController {
                                                                @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getJewelryVideosByDate(jewelry, from, to), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonAllVideos")
+    public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId) {
+        return new ResponseEntity(statisticsService.getSalesPersonAllVideosSent(userId), HttpStatus.OK);
+    }
 }

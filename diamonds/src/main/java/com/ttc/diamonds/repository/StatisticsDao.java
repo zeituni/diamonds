@@ -29,4 +29,12 @@ public class StatisticsDao {
                 "group by date(creation_date)";
         return jdbcTemplate.query(sql, new Object[] {jewelryId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
+
+    public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
+        String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
+                "from customer c " +
+                "where c.sales_person = ? " +
+                "group by c.jewelry";
+        return jdbcTemplate.query(sql, new Object[] {userId}, new StatisticsRowMapper(userRepository, jewelryRepository));
+    }
 }

@@ -5,14 +5,13 @@ import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.User;
 import com.ttc.diamonds.service.converter.JewelryConverter;
 import com.ttc.diamonds.service.converter.UserConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
@@ -30,8 +29,10 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
     public StatisticsRow mapRow(ResultSet row, int i) throws SQLException {
         StatisticsRow statisticsRow = new StatisticsRow();
         Timestamp rowDate = row.getTimestamp("creation_date");
-        statisticsRow.setDay(String.valueOf(extractFromDate(rowDate, Calendar.DAY_OF_MONTH)));
-        statisticsRow.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR_OF_DAY)));
+        if (rowDate != null) {
+            statisticsRow.setDay(formatDate(rowDate));
+            statisticsRow.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR_OF_DAY)));
+        }
         Long userId = row.getLong("user");
         if (userId != null) {
             User user = userRepository.getOne(userId);
@@ -44,6 +45,11 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
         }
         statisticsRow.setTotal(row.getInt("total"));
         return statisticsRow;
+    }
+
+    private String formatDate(Timestamp timestamp) {
+        DateFormat simpleDateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT);
+        return simpleDateFormat.format(timestamp);
     }
 
     private int extractFromDate(Timestamp date, int field) {

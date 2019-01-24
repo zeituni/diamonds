@@ -21,7 +21,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
-        return null;
+        return dao.getSalesPersonAllVideosSent(userId);
     }
 
     @Override
