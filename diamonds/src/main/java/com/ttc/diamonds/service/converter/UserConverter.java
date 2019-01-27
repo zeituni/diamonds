@@ -13,6 +13,7 @@ public class UserConverter {
         toReturn.setLastName(dto.getLastName());
         toReturn.setManufacturer(manufacturer);
         toReturn.setUsername(dto.getUsername());
+        toReturn.setPassword(dto.getPassword());
         toReturn.setStore(store);
         toReturn.setRole(dto.getRole());
         return toReturn;

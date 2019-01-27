@@ -38,4 +38,6 @@ public class StatisticsController {
                                                                        @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getSalesPersonVideosSentByDate(userId, from, to), HttpStatus.OK);
     }
+
+
 }

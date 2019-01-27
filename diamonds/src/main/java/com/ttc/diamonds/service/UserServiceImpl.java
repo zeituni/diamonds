@@ -4,9 +4,12 @@ import com.ttc.diamonds.dto.UserDTO;
 import com.ttc.diamonds.model.Manufacturer;
 import com.ttc.diamonds.model.Store;
 import com.ttc.diamonds.model.User;
+import com.ttc.diamonds.repository.ManufacturerRepository;
+import com.ttc.diamonds.repository.StoreRepository;
 import com.ttc.diamonds.repository.UserRepository;
 import com.ttc.diamonds.service.converter.UserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ManufacturerRepository manufacturerRepository;
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public User getUser(String username) {
@@ -23,7 +33,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUSer(UserDTO userDTO, Manufacturer manufacturer, Store store) {
+    public boolean addUSer(UserDTO userDTO, Long manufacturerId) {
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        Store store = storeRepository.findByManufacturerAndName(manufacturer, userDTO.getStore());
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+            return false;
+        }
         User user = userRepository.save(UserConverter.convertDtoToEntity(userDTO, manufacturer, store));
         return user != null;
 

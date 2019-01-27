@@ -5,7 +5,6 @@ import com.ttc.diamonds.repository.StatisticsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,12 +29,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatisticsRow> getSalesPersonVideosSentByDay(Long userId, Date from, Date to) {
-        return null;
-    }
-
-    @Override
-    public Object getSalesPersonVideosSentByDate(Long userId, String from, String to) {
+    public List<StatisticsRow> getSalesPersonVideosSentByDate(Long userId, String from, String to) {
         return dao.getSalesPersonVideosSentByDate(userId, from, to);
     }
 }

@@ -11,6 +11,9 @@ public class Store {
     private String state;
     private String city;
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "manufacturer", referencedColumnName = "id")
+    private Manufacturer manufacturer;
 
     public Long getId() {
         return id;
@@ -42,5 +45,13 @@ public class Store {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }
