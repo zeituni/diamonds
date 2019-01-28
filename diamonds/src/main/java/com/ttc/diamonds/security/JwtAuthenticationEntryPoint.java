@@ -1,4 +1,4 @@
-package com.ttc.diamonds.config;
+package com.ttc.diamonds.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

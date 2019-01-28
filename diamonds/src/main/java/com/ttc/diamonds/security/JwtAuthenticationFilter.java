@@ -1,4 +1,4 @@
-package com.ttc.diamonds.config;
+package com.ttc.diamonds.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;

@@ -1,9 +1,7 @@
 package com.ttc.diamonds.controller;
 
-import com.ttc.diamonds.config.JwtTokenUtil;
+import com.ttc.diamonds.security.JwtTokenUtil;
 import com.ttc.diamonds.dto.AuthToken;
-import com.ttc.diamonds.model.User;
-import com.ttc.diamonds.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +23,6 @@ public class AuthenticationController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<AuthToken> register(@RequestParam String username, @RequestParam String password) throws AuthenticationException {

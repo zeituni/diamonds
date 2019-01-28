@@ -1,5 +1,7 @@
 package com.ttc.diamonds.config;
 
+import com.ttc.diamonds.security.JwtAuthenticationEntryPoint;
+import com.ttc.diamonds.security.JwtAuthenticationFilter;
 import com.ttc.diamonds.service.AppUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
