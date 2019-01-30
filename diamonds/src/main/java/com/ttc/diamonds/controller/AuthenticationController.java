@@ -25,7 +25,7 @@ public class AuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<AuthToken> register(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
+    public ResponseEntity<AuthToken> login(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         if (auth.isAuthenticated()) {
