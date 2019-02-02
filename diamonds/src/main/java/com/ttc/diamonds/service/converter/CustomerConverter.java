@@ -19,7 +19,6 @@ public class CustomerConverter {
         toReturn.setManufacturer(manufacturer);
         toReturn.setJewelry(jewelry);
         toReturn.setUser(UserConverter.convertDtoToEntity(dto.getUser(), manufacturer, store));
-        toReturn.setCreationDate(new Date(System.currentTimeMillis()));
         return toReturn;
     }
 
