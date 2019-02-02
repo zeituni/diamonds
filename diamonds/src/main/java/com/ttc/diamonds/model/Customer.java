@@ -21,7 +21,7 @@ public class Customer {
     private Jewelry jewelry;
     @Column(name = "creation_date")
     private Date creationDate;
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.REFRESH)
     @JoinColumn(name = "sales_person", referencedColumnName = "id")
     private User user;
 

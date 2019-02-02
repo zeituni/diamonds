@@ -1,6 +1,7 @@
 package com.ttc.diamonds.service;
 
 import com.ttc.diamonds.dto.UserDTO;
+import com.ttc.diamonds.model.Manufacturer;
 import com.ttc.diamonds.model.User;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserService {
     List<User> getAllUsers(Long manufacturer);
 
     List<User> getUsersByCity(Long manufacturerId, String state, String city);
+
+    UserDTO getUserDtoByUsernameAndManufacturer(String username, Manufacturer manufacturer);
 }

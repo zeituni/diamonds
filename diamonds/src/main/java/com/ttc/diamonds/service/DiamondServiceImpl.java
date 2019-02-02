@@ -3,12 +3,15 @@ package com.ttc.diamonds.service;
 import com.ttc.diamonds.dto.CustomerDTO;
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.dto.ManufacturerDTO;
+import com.ttc.diamonds.dto.UserDTO;
 import com.ttc.diamonds.model.Customer;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.Manufacturer;
+import com.ttc.diamonds.model.Store;
 import com.ttc.diamonds.repository.CustomerRepository;
 import com.ttc.diamonds.repository.JewelryRepository;
 import com.ttc.diamonds.repository.ManufacturerRepository;
+import com.ttc.diamonds.repository.StoreRepository;
 import com.ttc.diamonds.service.converter.CustomerConverter;
 import com.ttc.diamonds.service.converter.JewelryConverter;
 import com.ttc.diamonds.service.converter.ManufacturerConverter;
@@ -38,6 +41,12 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Value("${aws.credentials.access.key}")
     private String s3AccessKey;
@@ -112,6 +121,23 @@ public class DiamondServiceImpl implements DiamondsService {
             }
         }
         return toReturn;
+    }
+
+    @Override
+    public boolean addCustomer(String name, String email, String phone, String barcode, String videoUrl, String username, Long manufacturerId) {
+        CustomerDTO customer = new CustomerDTO();
+        customer.setName(name);
+        customer.setBarcode(barcode);
+        customer.setEmail(email);
+        customer.setPhone(phone);
+        customer.setVideoUrl(videoUrl);
+        Jewelry jewelry = jewelryRepository.findByBarcode(barcode);
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        UserDTO user = userService.getUserDtoByUsernameAndManufacturer(username, manufacturer);
+        customer.setUser(user);
+        Store store = storeRepository.findByManufacturerAndName(manufacturer, user.getStore());
+        Customer savedCustomer = customerRepository.save(CustomerConverter.convertDtoToEntity(customer, manufacturer, jewelry, store));
+        return savedCustomer != null;
     }
 
     private String extractFileSuffix(String video) {

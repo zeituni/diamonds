@@ -17,4 +17,6 @@ public interface DiamondsService {
     boolean addJewelry(JewelryDTO jewelryDTO, MultipartFile video);
 
     List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId);
+
+    boolean addCustomer(String name, String email, String phone, String barcode, String videoUrl, String salesPerson, Long manufacturer);
 }

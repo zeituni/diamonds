@@ -9,6 +9,9 @@ public class UserConverter {
 
     public static User convertDtoToEntity(UserDTO dto, Manufacturer manufacturer, Store store) {
         User toReturn = new User();
+        if (dto.getId() != null) {
+            toReturn.setId(dto.getId());
+        }
         toReturn.setFirstName(dto.getFirstName());
         toReturn.setLastName(dto.getLastName());
         toReturn.setManufacturer(manufacturer);

@@ -71,5 +71,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUsersByCity(manufacturerId, state, city);
     }
 
+    @Override
+    public UserDTO getUserDtoByUsernameAndManufacturer(String username, Manufacturer manufacturer) {
+        User user = userRepository.findByUsernameAndManufacturer(username, manufacturer);
+        if (user != null) {
+            return UserConverter.convertEntityToDto(user);
+        }
+        return null;
+    }
+
 
 }

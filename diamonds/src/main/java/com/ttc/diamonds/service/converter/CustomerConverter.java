@@ -7,6 +7,8 @@ import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.Manufacturer;
 import com.ttc.diamonds.model.Store;
 
+import java.sql.Date;
+
 public class CustomerConverter {
 
     public static Customer convertDtoToEntity(CustomerDTO dto, Manufacturer manufacturer, Jewelry jewelry, Store store) {
@@ -17,6 +19,7 @@ public class CustomerConverter {
         toReturn.setManufacturer(manufacturer);
         toReturn.setJewelry(jewelry);
         toReturn.setUser(UserConverter.convertDtoToEntity(dto.getUser(), manufacturer, store));
+        toReturn.setCreationDate(new Date(System.currentTimeMillis()));
         return toReturn;
     }
 

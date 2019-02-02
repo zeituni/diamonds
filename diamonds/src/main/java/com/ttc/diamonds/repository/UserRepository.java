@@ -1,5 +1,6 @@
 package com.ttc.diamonds.repository;
 
+import com.ttc.diamonds.model.Manufacturer;
 import com.ttc.diamonds.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String userName);
+
+    User findByUsernameAndManufacturer(String username, Manufacturer manufacturer);
 
     @Query(value = "select u.* from user u inner join store s on u.store = s.id where u.manufacturer = :manufacturerId and s.name = :storeName", nativeQuery =  true)
     List<User> getUsersByStore(@Param("manufacturerId") Long manufacturerId, @Param(value = "storeName") String storeName);
