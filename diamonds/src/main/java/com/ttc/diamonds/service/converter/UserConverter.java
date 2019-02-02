@@ -30,7 +30,7 @@ public class UserConverter {
         dto.setUsername(entity.getUsername());
         dto.setPassword(entity.getPassword());
         dto.setRole(entity.getRole());
-        dto.setStore(entity.getStore().getName());
+        dto.setStore(entity.getStore() != null ? entity.getStore().getName() : "N/A");
         return dto;
     }
 }
