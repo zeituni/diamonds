@@ -41,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.security-realm}")
     private String securityRealm;
 
+    @Value("${diamonds.host}")
+    private String serverHost;
+
     @Autowired
     private AppUserDetailService userDetailService;
 
@@ -128,7 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://${diamonds.host}", "http://${diamonds.host}:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://"  + serverHost, "http://" + serverHost + ":4200", "http://localhost", "http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
