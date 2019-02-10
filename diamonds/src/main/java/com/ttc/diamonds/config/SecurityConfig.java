@@ -133,7 +133,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://"  + serverHost, "http://" + serverHost + ":4200",
                 "http://localhost", "http://localhost:4200", "http://localhost:81"
-                ,"http://" + serverHost + ":81", "http://" + serverHost + ":8080"));
+                ,"http://" + serverHost + ":81"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
