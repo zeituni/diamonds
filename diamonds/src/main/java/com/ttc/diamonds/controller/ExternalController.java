@@ -16,7 +16,7 @@ public class ExternalController {
     @Autowired
     private DiamondsService diamondsService;
 
-    @CrossOrigin(origins = "http://${diamonds.host}")
+    @CrossOrigin(origins = "http://${diamonds.host}:81")
     @RequestMapping(method = RequestMethod.GET, value = "/getCustomersByManufacturer")
     public ResponseEntity<List<CustomerDTO>> findCustomersByManufacturer(@RequestParam long manufacturerId) {
         List<CustomerDTO> customersList = diamondsService.getAllCustomersByManufacturer(manufacturerId);
