@@ -1,5 +1,6 @@
 package com.ttc.diamonds.config;
 
+import com.ttc.diamonds.security.CorsFilter;
 import com.ttc.diamonds.security.JwtAuthenticationEntryPoint;
 import com.ttc.diamonds.security.JwtAuthenticationFilter;
 import com.ttc.diamonds.service.AppUserDetailService;
@@ -78,6 +79,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
+    @Bean
+    public CorsFilter corsFilterBean() {
+        return new CorsFilter();
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -98,6 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(corsFilterBean(), JwtAuthenticationFilter.class);
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
     }
