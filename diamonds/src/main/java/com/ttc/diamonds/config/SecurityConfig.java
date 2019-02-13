@@ -1,6 +1,5 @@
 package com.ttc.diamonds.config;
 
-import com.ttc.diamonds.security.CorsFilter;
 import com.ttc.diamonds.security.JwtAuthenticationEntryPoint;
 import com.ttc.diamonds.security.JwtAuthenticationFilter;
 import com.ttc.diamonds.service.AppUserDetailService;
@@ -25,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
@@ -80,8 +80,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public CorsFilter corsFilterBean() {
-        return new CorsFilter();
+    public CorsFilter corsFilter() {
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://" + serverHost);
+        config.addAllowedOrigin("http://" + serverHost + ":4200");
+        config.addAllowedOrigin("http://" + serverHost + ":81");
+        config.addAllowedOrigin("http://localhost");
+        config.addAllowedOrigin("http://localhost:81");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 
@@ -104,7 +118,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(corsFilterBean(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
     }
