@@ -79,25 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://" + serverHost);
-        config.addAllowedOrigin("http://" + serverHost + ":4200");
-        config.addAllowedOrigin("http://" + serverHost + ":81");
-        config.addAllowedOrigin("http://localhost");
-        config.addAllowedOrigin("http://localhost:81");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("POST");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
