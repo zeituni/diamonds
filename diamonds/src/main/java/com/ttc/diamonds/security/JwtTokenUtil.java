@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(signingKey)
+                .setSigningKey(new SecretKeySpec(signingKey.getBytes(), SignatureAlgorithm.HS256.getValue()))
                 .parseClaimsJws(token)
                 .getBody();
     }

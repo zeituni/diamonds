@@ -38,15 +38,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(authToken);
             } catch (IllegalArgumentException e) {
                 logger.error("an error occured during getting username from token", e);
+                throw e;
             } catch (ExpiredJwtException e) {
                 logger.warn("the token is expired and not valid anymore", e);
+                throw e;
             } catch(SignatureException e){
                 logger.error("Authentication Failed. Username or Password not valid.");
+                throw e;
             }
         } else {
             logger.warn("couldn't find bearer string, will ignore the header");
         }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null)) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
