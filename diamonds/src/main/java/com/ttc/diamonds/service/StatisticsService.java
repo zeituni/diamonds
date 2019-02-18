@@ -10,6 +10,8 @@ public interface StatisticsService {
 
     List<StatisticsRow> getJewelryVideosByDate(Long jewelryId, String from, String to);
 
+    List<StatisticsRow> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to);
+
     List<StatisticsRow> getSalesPersonAllVideosSent(Long userId);
 
     List<StatisticsRow> getSalesPersonDailyVideosSent(Long userId);

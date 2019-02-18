@@ -30,6 +30,16 @@ public class StatisticsDao {
         return jdbcTemplate.query(sql, new Object[] {jewelryId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
+    public List<StatisticsRow> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
+
+        String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
+                "from customer c " +
+                "inner join jewelry j on c.jewelry = j.id " +
+                "where j.barcode = ? and creation_date between ? and ? " +
+                "group by date(creation_date)";
+        return jdbcTemplate.query(sql, new Object[] {barcode, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
+    }
+
     public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +

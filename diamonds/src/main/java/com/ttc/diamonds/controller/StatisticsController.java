@@ -27,6 +27,13 @@ public class StatisticsController {
         return new ResponseEntity(statisticsService.getJewelryVideosByDate(jewelry, from, to), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getJewelryByBarcodeAndDate")
+    public ResponseEntity<List<StatisticsRow>> getJewelryByBarcodeAndDate(@RequestParam("barcode") String barcode,
+                                                                @RequestParam("from") String from,
+                                                                @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getJewelryVideosByBarcodeAndDate(barcode, from, to), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonAllVideos")
     public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId) {
         return new ResponseEntity(statisticsService.getSalesPersonAllVideosSent(userId), HttpStatus.OK);

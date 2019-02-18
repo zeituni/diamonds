@@ -19,6 +19,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    public List<StatisticsRow> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
+        return dao.getJewelryVideosByBarcodeAndDate(barcode, from, to);    }
+
+    @Override
     public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
         return dao.getSalesPersonAllVideosSent(userId);
     }
