@@ -3,6 +3,7 @@ package com.ttc.diamonds.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -16,6 +17,7 @@ public class CustomerDTO {
     private String videoUrl;
     @JsonProperty("sales_person")
     private UserDTO user;
+    private Date date;
 
     @Override
     public boolean equals(Object o) {
@@ -33,6 +35,14 @@ public class CustomerDTO {
     public int hashCode() {
 
         return Objects.hash(getId(), getName(), getEmail(), getPhone(), getBarcode());
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Long getId() {

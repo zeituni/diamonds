@@ -34,6 +34,7 @@ public class CustomerConverter {
         toReturn.setPhone(entity.getPhone());
         toReturn.setVideoUrl("https://s3.amazonaws.com/" + entity.getJewelry().getVideo());
         toReturn.setUser(UserConverter.convertEntityToDto(entity.getUser()));
+        toReturn.setDate(entity.getCreationDate());
         return toReturn;
     }
 }
