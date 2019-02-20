@@ -1,6 +1,7 @@
 package com.ttc.diamonds.service;
 
 import com.ttc.diamonds.dto.StatisticsRow;
+import com.ttc.diamonds.dto.StoreStatistics;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface StatisticsService {
     List<StatisticsRow> getSalesPersonDailyVideosSent(Long userId);
 
     List<StatisticsRow> getSalesPersonVideosSentByDate(Long userId, String from, String to);
+
+    List<StoreStatistics> getStoreVideosSentByDate(Long manufacturerId, Long storeId, String from, String to);
+
+    List<StoreStatistics> getAllStoresVideosSent(Long manufacturerId, String from, String to);
+
+    List<StoreStatistics> getStoreVideoSentGroupedByJewelry(Long manufacturerId, Long storeId, String from, String to);
 }

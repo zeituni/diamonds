@@ -1,6 +1,7 @@
 package com.ttc.diamonds.controller;
 
 import com.ttc.diamonds.dto.StatisticsRow;
+import com.ttc.diamonds.dto.StoreStatistics;
 import com.ttc.diamonds.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,26 @@ public class StatisticsController {
         return new ResponseEntity(statisticsService.getSalesPersonVideosSentByDate(userId, from, to), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getAllStoresVideos")
+    public ResponseEntity<List<StoreStatistics>> getAllStoresVideos(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                    @RequestParam("from") String from,
+                                                                    @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getAllStoresVideosSent(manufacturerId, from, to), HttpStatus.OK);
+    }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getStoreVideosByDate")
+    public ResponseEntity<List<StoreStatistics>> getStoresVideosByDate(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                    @RequestParam("storeId") Long storeId,
+                                                                    @RequestParam("from") String from,
+                                                                    @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getStoreVideosSentByDate(manufacturerId, storeId, from, to), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getStoreVideosGroupByJewelry")
+    public ResponseEntity<List<StoreStatistics>> getStoresVideosGroupByJewelry(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                    @RequestParam("storeId") Long storeId,
+                                                                    @RequestParam("from") String from,
+                                                                    @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getStoreVideoSentGroupedByJewelry(manufacturerId, storeId, from, to), HttpStatus.OK);
+    }
 }
