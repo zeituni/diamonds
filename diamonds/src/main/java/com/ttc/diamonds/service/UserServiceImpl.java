@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
         Store store = storeRepository.findByManufacturerAndName(manufacturer, userDTO.getStore());
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+        if (userRepository.findByUsernameAndManufacturer(userDTO.getUsername(), manufacturer) != null) {
             return false;
         }
         User user = userRepository.save(UserConverter.convertDtoToEntity(userDTO, manufacturer, store));
@@ -46,8 +46,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(String username) {
-        User user = userRepository.findByUsername(username);
+    public boolean deleteUser(String username, Long manufacturerId) {
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        User user = userRepository.findByUsernameAndManufacturer(username, manufacturer);
         if (user != null) {
             userRepository.delete(user);
             return true;
@@ -78,6 +79,22 @@ public class UserServiceImpl implements UserService {
             return UserConverter.convertEntityToDto(user);
         }
         return null;
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDto, Long manufacturerId) {
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        User user = userRepository.findByUsernameAndManufacturer(userDto.getUsername(), manufacturer);
+        if (user == null) {
+            return false;
+        }
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Store store = storeRepository.findByManufacturerAndName(manufacturer, userDto.getStore());
+        user.setStore(store);
+        userRepository.save(user);
+        return true;
     }
 
 

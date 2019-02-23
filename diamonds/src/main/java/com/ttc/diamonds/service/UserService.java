@@ -13,7 +13,7 @@ public interface UserService {
 
     boolean addUSer(UserDTO userDTO, Long manufacturerId);
 
-    boolean deleteUser(String username);
+    boolean deleteUser(String username, Long manufactirerId);
 
     List<User> getAllUsersPerStore(Long manufacturerId, String storeName);
 
@@ -22,4 +22,6 @@ public interface UserService {
     List<User> getUsersByCity(Long manufacturerId, String state, String city);
 
     UserDTO getUserDtoByUsernameAndManufacturer(String username, Manufacturer manufacturer);
+
+    boolean updateUser(UserDTO user, Long manufacturerId);
 }

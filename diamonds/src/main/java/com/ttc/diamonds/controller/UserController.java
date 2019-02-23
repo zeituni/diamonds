@@ -20,10 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private ManufacturerRepository manufacturerRepository;
-    @Autowired
-    private StoreRepository storeRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/getAllUsers")
     public ResponseEntity<List<UserDTO>> getAllUsersByManufacturer(@RequestParam Long manufacturerId) {
@@ -42,8 +38,18 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/addUser")
     public ResponseEntity<Boolean> addUser(@RequestBody UserDTO user, @RequestParam Long manufacturerId) {
+        return new ResponseEntity(userService.addUSer(user, manufacturerId), HttpStatus.OK);
+    }
 
-        userService.addUSer(user, manufacturerId);
-        return new ResponseEntity(Boolean.TRUE, HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteUser")
+    public ResponseEntity<Boolean> deleteUser(@RequestParam String username, @RequestParam Long manufacturerId) {
+        Boolean success = userService.deleteUser(username, manufacturerId);
+        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/updateUser")
+    public ResponseEntity<Boolean> updateUser(@RequestBody UserDTO user, @RequestParam Long manufacturerId) {
+        Boolean success = userService.updateUser(user, manufacturerId);
+        return new ResponseEntity(success, HttpStatus.OK);
     }
 }
