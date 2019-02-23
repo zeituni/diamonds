@@ -36,8 +36,8 @@ public class StatisticsDao {
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
                 "from customer c " +
                 "inner join jewelry j on c.jewelry = j.id " +
-                "where j.barcode = ? and creation_date between ? and ? " +
-                "group by date(creation_date)";
+                "where j.barcode = ? and c.creation_date between ? and ? " +
+                "group by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {barcode, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
@@ -87,7 +87,8 @@ public class StatisticsDao {
                 "inner join customer c on c.sales_person = u.id\n" +
                 "where s.manufacturer = ?\n" +
                 "and c.creation_date between ? and ?\n" +
-                "group by s.name;";
+                "group by s.name\n " +
+                "order by total desc;";
         return jdbcTemplate.query(sql, new Object[] {manufacturerId, from, to}, new StoreStatisticsRowMapper());
     }
 }
