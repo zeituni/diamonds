@@ -2,20 +2,10 @@ package com.ttc.diamonds.dto;
 
 import java.util.Objects;
 
-public class StoreStatistics {
+public class StoreStatistics extends StatisticsRow {
 
     private StoreDTO store;
-    private String day;
-    private int total;
-    private JewelryDTO jewelryDTO;
 
-    public JewelryDTO getJewelryDTO() {
-        return jewelryDTO;
-    }
-
-    public void setJewelryDTO(JewelryDTO jewelryDTO) {
-        this.jewelryDTO = jewelryDTO;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -42,19 +32,4 @@ public class StoreStatistics {
         this.store = store;
     }
 
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
 }

@@ -1,6 +1,6 @@
 package com.ttc.diamonds.repository;
 
-import com.ttc.diamonds.dto.StatisticsRow;
+import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.User;
 import com.ttc.diamonds.service.converter.JewelryConverter;
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
+public class StatisticsRowMapper implements RowMapper<UserStatistics> {
 
     private UserRepository userRepository;
     private JewelryRepository jewelryRepository;
@@ -26,25 +26,25 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
     }
 
     @Override
-    public StatisticsRow mapRow(ResultSet row, int i) throws SQLException {
-        StatisticsRow statisticsRow = new StatisticsRow();
+    public UserStatistics mapRow(ResultSet row, int i) throws SQLException {
+        UserStatistics userStatistics = new UserStatistics();
         Timestamp rowDate = row.getTimestamp("creation_date");
         if (rowDate != null) {
-            statisticsRow.setDay(formatDate(rowDate));
-            statisticsRow.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR_OF_DAY)));
+            userStatistics.setDay(formatDate(rowDate));
+            userStatistics.setHour(String.valueOf(extractFromDate(rowDate, Calendar.HOUR_OF_DAY)));
         }
         Long userId = row.getLong("user");
         if (userId != null) {
             User user = userRepository.getOne(userId);
-            statisticsRow.setUser(UserConverter.convertEntityToDto(user));
+            userStatistics.setUser(UserConverter.convertEntityToDto(user));
         }
         Long jewelryId = row.getLong("jewelry");
         if (jewelryId != null && jewelryId > 0) {
             Jewelry jewelry = jewelryRepository.getOne(jewelryId);
-            statisticsRow.setJewelryDTO(JewelryConverter.convertEntityToDTO(jewelry));
+            userStatistics.setJewelryDTO(JewelryConverter.convertEntityToDTO(jewelry));
         }
-        statisticsRow.setTotal(row.getInt("total"));
-        return statisticsRow;
+        userStatistics.setTotal(row.getInt("total"));
+        return userStatistics;
     }
 
     private String formatDate(Timestamp timestamp) {

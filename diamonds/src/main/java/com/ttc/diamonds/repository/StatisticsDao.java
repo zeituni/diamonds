@@ -1,14 +1,13 @@
 package com.ttc.diamonds.repository;
 
 
-import com.ttc.diamonds.dto.StatisticsRow;
+import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.dto.StoreStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -22,26 +21,28 @@ public class StatisticsDao {
     @Autowired
     private JewelryRepository jewelryRepository;
 
-    public List<StatisticsRow> getJewelryVideosByDate(Long jewelryId, String from, String to) {
+    public List<UserStatistics> getJewelryVideosByDate(Long jewelryId, String from, String to) {
 
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
                 "from customer c " +
                 "where c.jewelry = ? and creation_date between ? and ? " +
-                "group by date(creation_date)";
+                "group by date(creation_date) " +
+                "order by date(creation_date)";
         return jdbcTemplate.query(sql, new Object[] {jewelryId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
-    public List<StatisticsRow> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
+    public List<UserStatistics> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
 
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
                 "from customer c " +
                 "inner join jewelry j on c.jewelry = j.id " +
                 "where j.barcode = ? and c.creation_date between ? and ? " +
-                "group by date(c.creation_date)";
+                "group by date(c.creation_date) " +
+                "order by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {barcode, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
-    public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
+    public List<UserStatistics> getSalesPersonAllVideosSent(Long userId) {
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +
                 "where c.sales_person = ? " +
@@ -49,11 +50,12 @@ public class StatisticsDao {
         return jdbcTemplate.query(sql, new Object[] {userId}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
-    public List<StatisticsRow> getSalesPersonVideosSentByDate(Long userId, String from, String to) {
+    public List<UserStatistics> getSalesPersonVideosSentByDate(Long userId, String from, String to) {
         String sql = "select null as jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +
                 "where c.sales_person = ? and creation_date between ? and ? " +
-                "group by date(creation_date)";
+                "group by date(creation_date) " +
+                "order by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {userId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 
@@ -64,7 +66,8 @@ public class StatisticsDao {
                 "inner join store s on s.id = u.store " +
                 "where s.id = ? and c.creation_date between ? and ? " +
                 "and s.manufacturer = ? " +
-                "group by date(c.creation_date)";
+                "group by date(c.creation_date)" +
+                "order by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {storeId, from, to, manufacturerId}, new StoreStatisticsRowMapper());
     }
 
@@ -76,7 +79,8 @@ public class StatisticsDao {
                 "inner join jewelry j on c.jewelry = j.id " +
                 "where s.id = ? and c.creation_date between ? and ? " +
                 "and s.manufacturer = ? " +
-                "group by c.jewelry";
+                "group by c.jewelry " +
+                "order by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {storeId, from, to, manufacturerId}, new StoreStatisticsRowMapper());
     }
 
@@ -90,5 +94,13 @@ public class StatisticsDao {
                 "group by s.name\n " +
                 "order by total desc;";
         return jdbcTemplate.query(sql, new Object[] {manufacturerId, from, to}, new StoreStatisticsRowMapper());
+    }
+
+    public List<UserStatistics> getSalesPersonVideosSentByDateGroupedByJewelry(Long userId, String from, String to) {
+        String sql = "select jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
+                "from customer c " +
+                "where c.sales_person = ? and creation_date between ? and ? " +
+                "group by jewelry ";
+        return jdbcTemplate.query(sql, new Object[] {userId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
 }

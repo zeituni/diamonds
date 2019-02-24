@@ -1,6 +1,6 @@
 package com.ttc.diamonds.controller;
 
-import com.ttc.diamonds.dto.StatisticsRow;
+import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.dto.StoreStatistics;
 import com.ttc.diamonds.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,28 +21,35 @@ public class StatisticsController {
     private StatisticsService statisticsService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/getJewelryByDate")
-    public ResponseEntity<List<StatisticsRow>> getJewelryByDate(@RequestParam("jewelry") Long jewelry,
-                                                               @RequestParam("from") String from,
-                                                               @RequestParam("to") String to) {
+    public ResponseEntity<List<UserStatistics>> getJewelryByDate(@RequestParam("jewelry") Long jewelry,
+                                                                 @RequestParam("from") String from,
+                                                                 @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getJewelryVideosByDate(jewelry, from, to), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getJewelryByBarcodeAndDate")
-    public ResponseEntity<List<StatisticsRow>> getJewelryByBarcodeAndDate(@RequestParam("barcode") String barcode,
-                                                                @RequestParam("from") String from,
-                                                                @RequestParam("to") String to) {
+    public ResponseEntity<List<UserStatistics>> getJewelryByBarcodeAndDate(@RequestParam("barcode") String barcode,
+                                                                           @RequestParam("from") String from,
+                                                                           @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getJewelryVideosByBarcodeAndDate(barcode, from, to), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonAllVideos")
-    public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<UserStatistics>> getSalesPersonAllVideos(@RequestParam("userId") Long userId) {
         return new ResponseEntity(statisticsService.getSalesPersonAllVideosSent(userId), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonAllVideosGroupedByJewelry")
+    public ResponseEntity<List<UserStatistics>> getSalesPersonAllVideosByDate(@RequestParam("userId") Long userId,
+                                                                        @RequestParam("from") String from,
+                                                                        @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getSalesPersonAllVideosSentByDateGroupedByJewelry(userId, from, to), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/getSalesPersonVideosByDateRange")
-    public ResponseEntity<List<StatisticsRow>> getSalesPersonAllVideos(@RequestParam("userId") Long userId,
-                                                                       @RequestParam("from") String from,
-                                                                       @RequestParam("to") String to) {
+    public ResponseEntity<List<UserStatistics>> getSalesPersonAllVideos(@RequestParam("userId") Long userId,
+                                                                        @RequestParam("from") String from,
+                                                                        @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getSalesPersonVideosSentByDate(userId, from, to), HttpStatus.OK);
     }
 
