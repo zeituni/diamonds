@@ -1,20 +1,10 @@
 package com.ttc.diamonds.service;
 
-import com.ttc.diamonds.dto.CustomerDTO;
-import com.ttc.diamonds.dto.JewelryDTO;
-import com.ttc.diamonds.dto.ManufacturerDTO;
-import com.ttc.diamonds.dto.UserDTO;
-import com.ttc.diamonds.model.Customer;
-import com.ttc.diamonds.model.Jewelry;
-import com.ttc.diamonds.model.Manufacturer;
-import com.ttc.diamonds.model.Store;
-import com.ttc.diamonds.repository.CustomerRepository;
-import com.ttc.diamonds.repository.JewelryRepository;
-import com.ttc.diamonds.repository.ManufacturerRepository;
-import com.ttc.diamonds.repository.StoreRepository;
-import com.ttc.diamonds.service.converter.CustomerConverter;
-import com.ttc.diamonds.service.converter.JewelryConverter;
-import com.ttc.diamonds.service.converter.ManufacturerConverter;
+import com.google.common.collect.Iterables;
+import com.ttc.diamonds.dto.*;
+import com.ttc.diamonds.model.*;
+import com.ttc.diamonds.repository.*;
+import com.ttc.diamonds.service.converter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -47,6 +38,9 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StatesRepository statesRepository;
 
     @Value("${aws.credentials.access.key}")
     private String s3AccessKey;
@@ -138,6 +132,30 @@ public class DiamondServiceImpl implements DiamondsService {
         Store store = storeRepository.findByManufacturerAndName(manufacturer, user.getStore());
         Customer savedCustomer = customerRepository.save(CustomerConverter.convertDtoToEntity(customer, manufacturer, jewelry, store));
         return savedCustomer != null;
+    }
+
+    @Override
+    public List<StateDTO> getAllStates() {
+        Iterable<State> states =  statesRepository.findAll();
+        List<StateDTO> toReturn = new ArrayList<>();
+        Iterator<State> it = states.iterator();
+        while (it.hasNext()) {
+            toReturn.add(StatesConverter.convertEntityToDto(it.next()));
+        }
+        return toReturn;
+    }
+
+    @Override
+    public List<StoreDTO> getStoresByState(Long manufacturerId, String state) {
+        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        List<StoreDTO> toReturn  = new ArrayList<>();
+        List<Store> stores = storeRepository.findByStateAndManufacturer(state, manufacturer);
+        if (stores != null && !stores.isEmpty()) {
+            for (int i = 0; i < stores.size(); i++) {
+                toReturn.add(StoreConverter.convertEntityToDto(stores.get(i)));
+            }
+        }
+        return toReturn;
     }
 
     private String extractFileSuffix(String video) {
