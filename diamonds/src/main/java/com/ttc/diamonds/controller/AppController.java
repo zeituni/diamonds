@@ -88,4 +88,18 @@ public class AppController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @CrossOrigin(origins = "http://${diamonds.host}")
+    @RequestMapping(method = RequestMethod.POST, value = "/addHelzbergCustomer")
+    public ResponseEntity<String> addHelzbergCustomer(@RequestParam("name") String name,
+                                              @RequestParam("email") String email,
+                                              @RequestParam("phone") String phone,
+                                              @RequestParam("barcode") String barcode,
+                                              @RequestParam("sales_person") String salesPerson) {
+        if (diamondsService.addCustomer(name, email, phone, barcode, null, salesPerson, 1L)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

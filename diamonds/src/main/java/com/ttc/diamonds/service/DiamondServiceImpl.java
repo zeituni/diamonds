@@ -124,8 +124,12 @@ public class DiamondServiceImpl implements DiamondsService {
         customer.setBarcode(barcode);
         customer.setEmail(email);
         customer.setPhone(phone);
-        customer.setVideoUrl(videoUrl);
         Jewelry jewelry = jewelryRepository.findByBarcode(barcode);
+        if (videoUrl == null) {
+            customer.setVideoUrl(jewelry.getVideo());
+        } else {
+            customer.setVideoUrl(videoUrl);
+        }
         Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
         UserDTO user = userService.getUserDtoByUsernameAndManufacturer(username, manufacturer);
         customer.setUser(user);

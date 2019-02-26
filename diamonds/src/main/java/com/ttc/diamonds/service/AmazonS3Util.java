@@ -55,13 +55,13 @@ public class AmazonS3Util {
 
             String key = StringUtils.isNotBlank(s3Folder) ? s3Folder + "/" + s3FileName : s3FileName;
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest("ttc-diamonds", key, localTempFile, objectMetadata);
+            PutObjectRequest putObjectRequest = new PutObjectRequest("diamond-services", key, localTempFile, objectMetadata);
 
             amazonS3Client.putObject(putObjectRequest);
 
-            LOGGER.info(String.format("video %s has been uploaded to AWS Bucket: %s ", s3FileName, "ttc-diamonds" + "/" + key));
+            LOGGER.info(String.format("video %s has been uploaded to AWS Bucket: %s ", s3FileName, "diamond-services" + "/" + key));
 
-            return "ttc-diamonds/" + key;
+            return "diamond-services/" + key;
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage());

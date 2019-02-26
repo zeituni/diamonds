@@ -1,6 +1,6 @@
 package com.ttc.diamonds.service;
 
-import com.sun.javafx.tools.packager.PackagerException;
+
 import com.ttc.diamonds.dto.StatisticsRow;
 import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.dto.StoreStatistics;
@@ -29,7 +29,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public List<UserStatistics> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
-        return dao.getJewelryVideosByBarcodeAndDate(barcode, from, to);    }
+        List<UserStatistics> toReturn = dao.getJewelryVideosByBarcodeAndDate(barcode, from, to);
+        return (List<UserStatistics>)addMissingDates(toReturn, from, to);
+
+    }
 
     @Override
     public List<UserStatistics> getSalesPersonAllVideosSent(Long userId) {
@@ -74,34 +77,37 @@ public class StatisticsServiceImpl implements StatisticsService {
         try {
             List<StatisticsRow> toReturn = new ArrayList<>();
             DateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date start = inputDateFormat.parse(from);
-            Date end = inputDateFormat.parse(to);
+            Date startParameter = inputDateFormat.parse(from);
+            Date endParameter = inputDateFormat.parse(to);
             DateFormat dbDateFormat = new SimpleDateFormat("MM/dd/yy");
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(start);
+            Calendar startDate = Calendar.getInstance();
+            startDate.setTime(startParameter);
+            Calendar endDate = Calendar.getInstance();
+            endDate.setTime(endParameter);
+            endDate.add(Calendar.DATE, 1);
             int index = 0;
-            while (calendar.getTime().before(end)) {
+            while (startDate.getTime().before(endDate.getTime())) {
                 if (index < results.size()) {
                     StatisticsRow current = results.get(index);
                     Date statsDate = dbDateFormat.parse(current.getDay());
                     // check if this is the same date
-                    if (statsDate.equals(calendar.getTime())) {
+                    if (statsDate.equals(startDate.getTime())) {
                         toReturn.add(current);
                         index++;
                     } else {
                         // add empty statistics row
                         StatisticsRow statisticsRow = new StatisticsRow();
-                        statisticsRow.setDay(dbDateFormat.format(calendar.getTime()));
+                        statisticsRow.setDay(dbDateFormat.format(startDate.getTime()));
                         statisticsRow.setTotal(0);
                         toReturn.add(statisticsRow);
                     }
                 } else {
                     StatisticsRow statisticsRow = new StatisticsRow();
-                    statisticsRow.setDay(dbDateFormat.format(calendar.getTime()));
+                    statisticsRow.setDay(dbDateFormat.format(startDate.getTime()));
                     statisticsRow.setTotal(0);
                     toReturn.add(statisticsRow);
                 }
-                calendar.add(Calendar.DATE, 1);
+                startDate.add(Calendar.DATE, 1);
             }
             return toReturn;
         } catch (ParseException e) {

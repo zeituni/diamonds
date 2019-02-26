@@ -36,7 +36,7 @@ public class StatisticsDao {
         String sql = "select c.jewelry, c.sales_person as user, c.creation_date, count(jewelry) as total " +
                 "from customer c " +
                 "inner join jewelry j on c.jewelry = j.id " +
-                "where j.barcode = ? and c.creation_date between ? and ? " +
+                "where j.barcode = ? and c.creation_date between ? and date_add(?, INTERVAL 1 DAY) " +
                 "group by date(c.creation_date) " +
                 "order by date(c.creation_date)";
         return jdbcTemplate.query(sql, new Object[] {barcode, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
