@@ -36,4 +36,17 @@ public class AuthenticationController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @RequestMapping(value = "/loginApp", method = RequestMethod.POST)
+    public ResponseEntity<AuthToken> loginApp(@RequestParam String username, @RequestParam String password) throws AuthenticationException {
+
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        if (auth.isAuthenticated()) {
+            UserDetails user = (UserDetails) auth.getPrincipal();
+            final String token = jwtTokenUtil.generateToken(user);
+            return new ResponseEntity<>(new AuthToken(token, user.getUsername()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
