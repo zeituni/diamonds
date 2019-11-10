@@ -62,6 +62,7 @@ public class JwtTokenUtil implements Serializable {
 
         return Jwts.builder()
                 .setClaims(claims)
+
                 .setIssuer("diamond-services")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS * 1000))

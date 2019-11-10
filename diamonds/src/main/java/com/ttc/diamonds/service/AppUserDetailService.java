@@ -2,6 +2,7 @@ package com.ttc.diamonds.service;
 
 import com.ttc.diamonds.model.User;
 import com.ttc.diamonds.repository.UserRepository;
+import com.ttc.diamonds.security.AuthUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,9 +32,7 @@ public class AppUserDetailService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-
-        UserDetails userDetails = new org.springframework.security.core.userdetails.
-                User(user.getUsername(), user.getPassword(), authorities);
+        UserDetails userDetails = new AuthUserDetails(user.getUsername(), user.getPassword(), authorities, user.getManufacturer().getId());
 
         return userDetails;
     }

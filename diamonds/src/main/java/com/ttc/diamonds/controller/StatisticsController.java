@@ -75,4 +75,11 @@ public class StatisticsController {
                                                                     @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getStoreVideoSentGroupedByJewelry(manufacturerId, storeId, from, to), HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getTopJewelry")
+    public ResponseEntity<List<StoreStatistics>> getStoresVideosGroupByJewelry(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                               @RequestParam("from") String from,
+                                                                               @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getTopJewelry(manufacturerId, from, to), HttpStatus.OK);
+    }
 }

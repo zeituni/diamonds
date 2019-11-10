@@ -24,6 +24,8 @@ public class StoreStatisticsRowMapper implements RowMapper<StoreStatistics> {
         dto.setCity(row.getString("city"));
         dto.setState(row.getString("state"));
         dto.setName(row.getString("name"));
+        dto.setLongitude(row.getDouble("longitude"));
+        dto.setLatitude(row.getDouble("latitude"));
         toReturn.setStore(dto);
         Long jewelryId = row.getLong("jewelryId");
         if (jewelryId != null && jewelryId > 0) {

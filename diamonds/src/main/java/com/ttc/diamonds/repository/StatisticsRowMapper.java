@@ -1,5 +1,6 @@
 package com.ttc.diamonds.repository;
 
+import com.ttc.diamonds.dto.StatisticsRow;
 import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.model.User;
@@ -15,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
-public class StatisticsRowMapper implements RowMapper<UserStatistics> {
+public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
 
     private UserRepository userRepository;
     private JewelryRepository jewelryRepository;

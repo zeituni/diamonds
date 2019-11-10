@@ -23,37 +23,37 @@ public class StatisticsServiceImpl implements StatisticsService {
     private StatisticsDao dao;
 
     @Override
-    public List<UserStatistics> getJewelryVideosByDate(Long jewelryId, String from, String to) {
+    public List<StatisticsRow> getJewelryVideosByDate(Long jewelryId, String from, String to) {
         return dao.getJewelryVideosByDate(jewelryId, from, to);
     }
 
     @Override
-    public List<UserStatistics> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
-        List<UserStatistics> toReturn = dao.getJewelryVideosByBarcodeAndDate(barcode, from, to);
-        return (List<UserStatistics>)addMissingDates(toReturn, from, to);
+    public List<StatisticsRow> getJewelryVideosByBarcodeAndDate(String barcode, String from, String to) {
+        List<StatisticsRow> toReturn = dao.getJewelryVideosByBarcodeAndDate(barcode, from, to);
+        return (List<StatisticsRow>)addMissingDates(toReturn, from, to);
 
     }
 
     @Override
-    public List<UserStatistics> getSalesPersonAllVideosSent(Long userId) {
+    public List<StatisticsRow> getSalesPersonAllVideosSent(Long userId) {
         return dao.getSalesPersonAllVideosSent(userId);
     }
 
     @Override
-    public List<UserStatistics> getSalesPersonDailyVideosSent(Long userId) {
+    public List<StatisticsRow> getSalesPersonDailyVideosSent(Long userId) {
         return null;
     }
 
     @Override
-    public List<UserStatistics> getSalesPersonVideosSentByDate(Long userId, String from, String to) {
-        List<UserStatistics> toReturn = dao.getSalesPersonVideosSentByDate(userId, from, to);
-        return (List<UserStatistics>)addMissingDates(toReturn, from, to);
+    public List<StatisticsRow> getSalesPersonVideosSentByDate(Long userId, String from, String to) {
+        List<StatisticsRow> toReturn = dao.getSalesPersonVideosSentByDate(userId, from, to);
+        return (List<StatisticsRow>)addMissingDates(toReturn, from, to);
     }
 
     @Override
-    public List<StoreStatistics> getStoreVideosSentByDate(Long manufacturerId, Long storeId, String from, String to) {
+    public List<StatisticsRow> getStoreVideosSentByDate(Long manufacturerId, Long storeId, String from, String to) {
         List<StoreStatistics> toReturn = dao.getStoreVideosSentByDate(manufacturerId, storeId, from, to);
-        return (List<StoreStatistics>) addMissingDates(toReturn, from, to);
+        return (List<StatisticsRow>) addMissingDates(toReturn, from, to);
     }
 
     @Override
@@ -67,8 +67,13 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<UserStatistics> getSalesPersonAllVideosSentByDateGroupedByJewelry(Long userId, String from, String to) {
+    public List<StatisticsRow> getSalesPersonAllVideosSentByDateGroupedByJewelry(Long userId, String from, String to) {
         return dao.getSalesPersonVideosSentByDateGroupedByJewelry(userId, from, to);
+    }
+
+    @Override
+    public List<StatisticsRow> getTopJewelry(Long manufacturerId, String from, String to) {
+        return dao.getTopJewelry(manufacturerId, from, to);
     }
 
 
