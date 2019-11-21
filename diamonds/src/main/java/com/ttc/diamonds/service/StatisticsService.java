@@ -24,6 +24,8 @@ public interface StatisticsService {
 
     List<StoreStatistics> getAllStoresVideosSent(Long manufacturerId, String from, String to);
 
+    List<StoreStatistics> getAllStoresPerManufacturer(Long manufacturerId);
+
     List<StoreStatistics> getStoreVideoSentGroupedByJewelry(Long manufacturerId, Long storeId, String from, String to);
 
     List<StatisticsRow> getSalesPersonAllVideosSentByDateGroupedByJewelry(Long userId, String from, String to);

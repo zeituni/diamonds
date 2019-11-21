@@ -62,6 +62,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    public List<StoreStatistics> getAllStoresPerManufacturer(Long manufacturerId) {
+        return dao.getAllStoresPerManufacturer(manufacturerId);
+    }
+
+
+    @Override
     public List<StoreStatistics> getStoreVideoSentGroupedByJewelry(Long manufacturerId, Long storeId, String from, String to) {
         return dao.getStoreVideosSentByDateGroupedByJewelry(manufacturerId, storeId, from, to);
     }

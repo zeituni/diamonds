@@ -97,6 +97,17 @@ public class StatisticsDao {
         return jdbcTemplate.query(sql, new Object[] {manufacturerId, from, to}, new StoreStatisticsRowMapper());
     }
 
+    public List<StoreStatistics> getAllStoresPerManufacturer(Long manufacturerId) {
+        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude,  null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total\n" +
+                "from store s\n" +
+                "left join user u on s.id = u.store\n" +
+                "left join customer c on c.sales_person = u.id\n" +
+                "where s.manufacturer = ?\n" +
+                "group by s.name\n " +
+                "order by total desc;";
+        return jdbcTemplate.query(sql, new Object[] {manufacturerId}, new StoreStatisticsRowMapper());
+    }
+
     public List<StatisticsRow> getSalesPersonVideosSentByDateGroupedByJewelry(Long userId, String from, String to) {
         String sql = "select jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +

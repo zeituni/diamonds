@@ -57,8 +57,16 @@ public class StatisticsController {
     public ResponseEntity<List<StoreStatistics>> getAllStoresVideos(@RequestParam("manufacturerId") Long manufacturerId,
                                                                     @RequestParam("from") String from,
                                                                     @RequestParam("to") String to) {
-        return new ResponseEntity(statisticsService.getAllStoresVideosSent(manufacturerId, from, to), HttpStatus.OK);
+        List<StoreStatistics> stores = statisticsService.getAllStoresVideosSent(manufacturerId, from, to);
+        return new ResponseEntity(stores, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getAllStoresPerManufacturer")
+    public ResponseEntity<List<StoreStatistics>> getAllStoresVideos(@RequestParam("manufacturerId") Long manufacturerId) {
+        List<StoreStatistics> stores = statisticsService.getAllStoresPerManufacturer(manufacturerId);
+        return new ResponseEntity(stores, HttpStatus.OK);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET, path = "/getStoreVideosByDate")
     public ResponseEntity<List<StoreStatistics>> getStoresVideosByDate(@RequestParam("manufacturerId") Long manufacturerId,
