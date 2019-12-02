@@ -119,7 +119,7 @@ public class StatisticsDao {
     public List<StatisticsRow> getTopJewelry(Long manufacturerId, String from, String to) {
         String sql = "select jewelry, c.sales_person as user, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +
-                "where c.sales_person = ? and creation_date between ? and ? " +
+                "where c.manufacturer = ? and creation_date between ? and ? " +
                 "group by jewelry ";
         return jdbcTemplate.query(sql, new Object[] {manufacturerId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
