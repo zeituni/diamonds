@@ -6,10 +6,7 @@ import com.ttc.diamonds.service.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -89,5 +86,13 @@ public class StatisticsController {
                                                                                @RequestParam("from") String from,
                                                                                @RequestParam("to") String to) {
         return new ResponseEntity(statisticsService.getTopJewelry(manufacturerId, from, to), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/getJewelryCountPerStore")
+    public ResponseEntity<List<StoreStatistics>> getJewelryCountPerStore(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                               @RequestParam("jewelryId") Long jewelryId,
+                                                                               @RequestParam("from") String from,
+                                                                               @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getJewelryPerStore(manufacturerId, jewelryId, from, to), HttpStatus.OK);
     }
 }

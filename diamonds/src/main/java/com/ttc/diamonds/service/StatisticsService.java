@@ -31,4 +31,6 @@ public interface StatisticsService {
     List<StatisticsRow> getSalesPersonAllVideosSentByDateGroupedByJewelry(Long userId, String from, String to);
 
     List<StatisticsRow> getTopJewelry(Long manufacturerId, String from, String to);
+
+    List<StoreStatistics> getJewelryPerStore(Long manufacturerId, Long jewelryId, String from, String to);
 }

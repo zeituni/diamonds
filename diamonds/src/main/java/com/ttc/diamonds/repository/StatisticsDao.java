@@ -123,4 +123,17 @@ public class StatisticsDao {
                 "group by jewelry ";
         return jdbcTemplate.query(sql, new Object[] {manufacturerId, from, to}, new StatisticsRowMapper(userRepository, jewelryRepository));
     }
+
+    public List<StoreStatistics> getBarcodePerStore(long manufacturerId, Long jewelryId, String from, String to) {
+        String sql = "select s.id as storeId, s.state, s.city, s.name, longitude, latitude,  c.jewelry as jewelryId, null as barcode, c.creation_date, count(s.id) as total\n" +
+                "from store s\n" +
+                "inner join user u on u.store = s.id\n" +
+                "inner JOIN customer c on c.sales_person = u.id\n" +
+                "where c.jewelry = ?\n" +
+                "and c.manufacturer = ? \n" +
+                "and c.creation_date between ? and ? \n" +
+                "group by s.id";
+        return jdbcTemplate.query(sql, new Object[] {jewelryId, manufacturerId,  from, to}, new StoreStatisticsRowMapper());
+
+    }
 }

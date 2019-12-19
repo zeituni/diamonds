@@ -82,6 +82,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         return dao.getTopJewelry(manufacturerId, from, to);
     }
 
+    @Override
+    public List<StoreStatistics> getJewelryPerStore(Long manufacturerId, Long jewelryId, String from, String to) {
+        return dao.getBarcodePerStore(manufacturerId, jewelryId, from, to);
+    }
+
 
     private List<? extends StatisticsRow> addMissingDates(List<? extends StatisticsRow> results, String from, String to) {
 
