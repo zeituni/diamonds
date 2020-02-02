@@ -1,7 +1,5 @@
 package com.ttc.diamonds.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,24 +52,17 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public String generateToken(UserDetails user) {
-        ObjectMapper mapper = new ObjectMapper();
-        String userJson = null;
-        try {
-            userJson = mapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            userJson = user.getUsername();
-        }
-        return doGenerateToken(userJson, user.getAuthorities());
+        return doGenerateToken(user.getUsername(), ((AuthUserDetails)user).getManufacturerId(), user.getAuthorities());
     }
 
-    private String doGenerateToken(String subject, Collection<? extends GrantedAuthority> roles) {
+    private String doGenerateToken(String subject, long manufacturerId, Collection<? extends GrantedAuthority> roles) {
 
         Claims claims = Jwts.claims().setSubject(subject);
         claims.put("scopes", Arrays.asList(roles));
 
         return Jwts.builder()
                 .setClaims(claims)
+                .setId(Long.toString(manufacturerId))
                 .setIssuer("diamond-services")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS * 1000))
