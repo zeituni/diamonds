@@ -8,6 +8,7 @@ import com.ttc.diamonds.model.Customer;
 import com.ttc.diamonds.model.Jewelry;
 import com.ttc.diamonds.repository.JewelryRepository;
 import com.ttc.diamonds.service.DiamondsService;
+import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/diamonds")
@@ -101,5 +103,25 @@ public class AppController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(method = RequestMethod.POST, value = "/addJewellery")
+    public ResponseEntity<String> addJewellery(@RequestBody String parameters) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            Map<String, String> params = mapper.readValue(parameters, Map.class);
+
+            if (diamondsService.findByBarcode(params.get("barcode")) != null) {
+                return new ResponseEntity<>("{\"result_text\": \"Jewellery with this barcode already exists!\"}", HttpStatus.CONFLICT);
+            }
+            diamondsService.addJewelry(params.get("barcode"), params.get("customer"), params.get("url"));
+        } catch (CustomerNotFoundException | IOException e) {
+            return new ResponseEntity<>("{\"result_text\": \"" + e.getMessage() + "\"}", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }

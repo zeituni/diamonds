@@ -5,6 +5,7 @@ import com.ttc.diamonds.dto.*;
 import com.ttc.diamonds.model.*;
 import com.ttc.diamonds.repository.*;
 import com.ttc.diamonds.service.converter.*;
+import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -104,6 +106,25 @@ public class DiamondServiceImpl implements DiamondsService {
             return false;
         }
     }
+
+    @Override
+    public boolean addJewelry(String barcode, String customer, String videoUrl) throws CustomerNotFoundException {
+        Jewelry jewelry = new Jewelry();
+        jewelry.setBarcode(barcode);
+        jewelry.setVideo(videoUrl);
+        Manufacturer manufacturer = manufacturerRepository.findByName(customer);
+        if (manufacturer == null) {
+            throw new CustomerNotFoundException(customer);
+        }
+        jewelry.setManufacturer(manufacturer);
+        jewelry.setCreationDate(new Date(System.currentTimeMillis()));
+        Jewelry persistedJewelry = jewelryRepository.save(jewelry);
+        if (persistedJewelry != null) {
+            return true;
+        }
+        return false;
+    }
+
 
     public List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId) {
         List<CustomerDTO> toReturn = new ArrayList<>();
