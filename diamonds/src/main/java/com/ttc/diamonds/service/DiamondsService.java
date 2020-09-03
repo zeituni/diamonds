@@ -26,7 +26,7 @@ public interface DiamondsService {
 
     List<StoreDTO> getStoresByState(Long manufacturer, String state);
 
-    void removeJewelleryVideoFromCloud(String barcode);
+//    void removeJewelleryVideoFromCloud(String barcode);
 
     boolean addManufacturer(String manufacturerName) throws ManufacturerAlreadyExistsException, ManufacturerAlreadyExistsException;
 }

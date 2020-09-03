@@ -183,11 +183,11 @@ public class DiamondServiceImpl implements DiamondsService {
         return toReturn;
     }
 
-    @Override
-    public void removeJewelleryVideoFromCloud(String barcode) {
-        amazonS3Util.removeVideo(barcode, s3AccessKey, s3SecretKey, s3Region);
-        LOG.info(barcode + " was removed");
-    }
+//    @Override
+//    public void removeJewelleryVideoFromCloud(String barcode) {
+//        amazonS3Util.removeVideo(barcode, s3AccessKey, s3SecretKey, s3Region);
+//        LOG.info(barcode + " was removed");
+//    }
 
     @Override
     public boolean addManufacturer(String manufacturerName) throws ManufacturerAlreadyExistsException {
