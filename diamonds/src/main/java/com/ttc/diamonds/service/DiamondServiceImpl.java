@@ -1,10 +1,10 @@
 package com.ttc.diamonds.service;
 
-import com.google.common.collect.Iterables;
 import com.ttc.diamonds.dto.*;
 import com.ttc.diamonds.model.*;
 import com.ttc.diamonds.repository.*;
 import com.ttc.diamonds.service.converter.*;
+import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,6 +181,25 @@ public class DiamondServiceImpl implements DiamondsService {
             }
         }
         return toReturn;
+    }
+
+    @Override
+    public void removeJewelleryVideoFromCloud(String barcode) {
+        amazonS3Util.removeVideo(barcode, s3AccessKey, s3SecretKey, s3Region);
+        LOG.info(barcode + " was removed");
+    }
+
+    @Override
+    public boolean addManufacturer(String manufacturerName) throws ManufacturerAlreadyExistsException {
+        if (manufacturerRepository.findByName(manufacturerName) != null) {
+            throw new ManufacturerAlreadyExistsException(manufacturerName);
+        }
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName(manufacturerName);
+        if (manufacturerRepository.save(manufacturer) == null) {
+            return false;
+        }
+        return true;
     }
 
     private String extractFileSuffix(String video) {

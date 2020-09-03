@@ -1,6 +1,7 @@
 package com.ttc.diamonds.service;
 
 import com.ttc.diamonds.dto.*;
+import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,4 +25,8 @@ public interface DiamondsService {
     List<StateDTO> getAllStates();
 
     List<StoreDTO> getStoresByState(Long manufacturer, String state);
+
+    void removeJewelleryVideoFromCloud(String barcode);
+
+    boolean addManufacturer(String manufacturerName) throws ManufacturerAlreadyExistsException, ManufacturerAlreadyExistsException;
 }

@@ -2,14 +2,11 @@ package com.ttc.diamonds.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.ttc.diamonds.dto.CustomerDTO;
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.dto.ManufacturerDTO;
-import com.ttc.diamonds.model.Customer;
-import com.ttc.diamonds.model.Jewelry;
-import com.ttc.diamonds.repository.JewelryRepository;
 import com.ttc.diamonds.service.DiamondsService;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
+import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -113,17 +110,41 @@ public class AppController {
 
         try {
             Map<String, String> params = mapper.readValue(parameters, Map.class);
-
+            if (Strings.isNullOrEmpty(params.get("customer")) || params.get("customer").equalsIgnoreCase("NONE")) {
+                return new ResponseEntity<>("{\"result_text\": \"Customer is empty or None, doing nothing\"}", HttpStatus.OK);
+            }
             if (Strings.isNullOrEmpty(params.get("barcode"))) {
                 return new ResponseEntity<>("{\"result_text\": \"Jewellery barcode is missing!\"}", HttpStatus.BAD_REQUEST);
             }
             if (diamondsService.findByBarcode(params.get("barcode")) != null) {
                 return new ResponseEntity<>("{\"result_text\": \"Jewellery with this barcode already exists!\"}", HttpStatus.CONFLICT);
             }
-            diamondsService.addJewelry(params.get("barcode"), params.get("customer"), params.get("url"));
+            if (params.get("barcode").startsWith("DIS")) {
+                diamondsService.removeJewelleryVideoFromCloud(params.get("barcode"));
+            } else {
+                diamondsService.addJewelry(params.get("barcode"), params.get("customer"), params.get("url"));
+            }
             return new ResponseEntity<>("{\"result_text\": \"Jewellery " + params.get("barcode") + " wad added successfully\"}", HttpStatus.OK);
         } catch (CustomerNotFoundException | IOException e) {
             return new ResponseEntity<>("{\"result_text\": \"" + e.getMessage() + "\"}", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(method = RequestMethod.POST, value = "/addNewCustomer")
+    public ResponseEntity<String> addCustomer(@RequestBody String parameters) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            Map<String, String> params = mapper.readValue(parameters, Map.class);
+            if (Strings.isNullOrEmpty(params.get("customer")) || params.get("customer").equalsIgnoreCase("NONE")) {
+                return new ResponseEntity<>("{\"result_text\": \"Customer is empty or None, doing nothing\"}", HttpStatus.BAD_REQUEST);
+            }
+            diamondsService.addManufacturer(params.get("customer"));
+
+            return new ResponseEntity<>("{\"result_text\": \"Customer " + params.get("customer") + " wad added successfully\"}", HttpStatus.OK);
+        } catch (ManufacturerAlreadyExistsException | IOException e) {
+            return new ResponseEntity<>("{\"result_text\": \"" + e.getMessage() + "\"}", HttpStatus.CONFLICT);
         }
     }
 }
