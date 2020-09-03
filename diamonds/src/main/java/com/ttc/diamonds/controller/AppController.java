@@ -120,7 +120,7 @@ public class AppController {
                 return new ResponseEntity<>("{\"result_text\": \"Jewellery with this barcode already exists!\"}", HttpStatus.CONFLICT);
             }
             if (params.get("barcode").startsWith("DIS")) {
-                diamondsService.removeJewelleryVideoFromCloud(params.get("barcode"));
+                return new ResponseEntity<>("{\"result_text\": \"Currently Ignoring DIS!\"}", HttpStatus.BAD_REQUEST);
             } else {
                 diamondsService.addJewelry(params.get("barcode"), params.get("customer"), params.get("url"));
             }
