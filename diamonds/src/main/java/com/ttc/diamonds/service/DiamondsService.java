@@ -1,10 +1,11 @@
 package com.ttc.diamonds.service;
 
 import com.ttc.diamonds.dto.*;
-import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
+import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface DiamondsService {
@@ -16,7 +17,7 @@ public interface DiamondsService {
 
     boolean addJewelry(JewelryDTO jewelryDTO, MultipartFile video);
 
-    boolean addJewelry(String barcode, String customer, String videoUrl) throws CustomerNotFoundException;
+    boolean addJewelry(String barcode, String customer, String videoUrl) throws CustomerNotFoundException, IOException;
 
     List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId);
 

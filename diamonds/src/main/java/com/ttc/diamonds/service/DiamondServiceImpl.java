@@ -4,8 +4,8 @@ import com.ttc.diamonds.dto.*;
 import com.ttc.diamonds.model.*;
 import com.ttc.diamonds.repository.*;
 import com.ttc.diamonds.service.converter.*;
-import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
+import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -108,14 +111,16 @@ public class DiamondServiceImpl implements DiamondsService {
     }
 
     @Override
-    public boolean addJewelry(String barcode, String customer, String videoUrl) throws CustomerNotFoundException {
+    public boolean addJewelry(String barcode, String customer, String videoUrl) throws CustomerNotFoundException, IOException {
         Jewelry jewelry = new Jewelry();
         jewelry.setBarcode(barcode);
-        jewelry.setVideo(videoUrl);
         Manufacturer manufacturer = manufacturerRepository.findByName(customer);
         if (manufacturer == null) {
             throw new CustomerNotFoundException(customer);
         }
+        InputStream url = new URL(videoUrl).openStream();
+        String amazonS3Link = amazonS3Util.uploadObjectFromFirebase(url, barcode + ".mp4", "video/mp4", s3AccessKey, s3SecretKey, s3Region, manufacturer.getName());
+        jewelry.setVideo(amazonS3Link);
         jewelry.setManufacturer(manufacturer);
         jewelry.setCreationDate(new Date(System.currentTimeMillis()));
         Jewelry persistedJewelry = jewelryRepository.save(jewelry);
