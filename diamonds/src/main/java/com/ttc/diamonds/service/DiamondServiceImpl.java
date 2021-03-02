@@ -134,7 +134,7 @@ public class DiamondServiceImpl implements DiamondsService {
     public List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId) {
         List<CustomerDTO> toReturn = new ArrayList<>();
         Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
-        List<Customer> customers = customerRepository.findByManufacturer(manufacturer);
+        List<Customer> customers = customerRepository.getByManufacturerDateDesc(manufacturer.getId());
         if (customers != null && !customers.isEmpty()) {
             for (int i = 0; i < customers.size(); i++) {
                 toReturn.add(CustomerConverter.convertEntityToDto(customers.get(i)));

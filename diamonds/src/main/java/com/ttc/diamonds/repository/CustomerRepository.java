@@ -18,4 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query(value = "select c.* from customer c inner join jewelry j on c.jewelry = j.id where j.barcode = :barcode", nativeQuery = true)
     List<Customer> findByBarcode(@Param("barcode") String barcode);
+
+    @Query(value = "select c.* from customer c where c.manufacturer = :manufacturer order by creation_date desc", nativeQuery = true)
+    List<Customer> getByManufacturerDateDesc(@Param("manufacturer") Long manufacturer );
 }
