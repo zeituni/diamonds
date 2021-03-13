@@ -136,4 +136,16 @@ public class StatisticsDao {
         return jdbcTemplate.query(sql, new Object[] {jewelryId, manufacturerId,  from, to}, new StoreStatisticsRowMapper());
 
     }
+
+    public List<UserStatistics> getTopSalesPerson(Long manufacturerId, String from, String to) {
+        String sql = "select u.id , u.first_name, u.last_name, s.id as store_id, s.name as store_name, s.state, c.creation_date, count(c.jewelry) as total\n" +
+                "from store s\n" +
+                "inner join user u on s.id = u.store\n" +
+                "inner join customer c on c.sales_person = u.id\n" +
+                "where s.manufacturer = ?\n" +
+                "and c.creation_date between ? and ?\n" +
+                "group by u.id\n" +
+                "order by total desc";
+        return jdbcTemplate.query(sql, new Object[] {manufacturerId,  from, to}, new UserStatisticsRowMapper());
+    }
 }

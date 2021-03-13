@@ -50,6 +50,13 @@ public class StatisticsController {
         return new ResponseEntity(statisticsService.getSalesPersonVideosSentByDate(userId, from, to), HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "/getTopSalesPerson")
+    public ResponseEntity<List<UserStatistics>> getTopSalesPerson(@RequestParam("manufacturerId") Long manufacturerId,
+                                                                  @RequestParam("from") String from,
+                                                                        @RequestParam("to") String to) {
+        return new ResponseEntity(statisticsService.getTopSalesPerson(manufacturerId, from, to), HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/getAllStoresVideos")
     public ResponseEntity<List<StoreStatistics>> getAllStoresVideos(@RequestParam("manufacturerId") Long manufacturerId,
                                                                     @RequestParam("from") String from,
