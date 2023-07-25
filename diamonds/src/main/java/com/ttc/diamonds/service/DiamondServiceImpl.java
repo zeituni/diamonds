@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -118,9 +118,8 @@ public class DiamondServiceImpl implements DiamondsService {
         if (manufacturer == null) {
             throw new CustomerNotFoundException(customer);
         }
-        InputStream url = new URL(videoUrl).openStream();
-        String amazonS3Link = amazonS3Util.uploadObjectFromFirebase(url, barcode + ".mp4", "video/mp4", s3AccessKey, s3SecretKey, s3Region, manufacturer.getName());
-        jewelry.setVideo(amazonS3Link);
+        String amazonUrl = uploadVideo(barcode, videoUrl, manufacturer);
+        jewelry.setVideo(amazonUrl);
         jewelry.setManufacturer(manufacturer);
         jewelry.setCreationDate(new Date(System.currentTimeMillis()));
         Jewelry persistedJewelry = jewelryRepository.save(jewelry);
@@ -130,6 +129,25 @@ public class DiamondServiceImpl implements DiamondsService {
         return false;
     }
 
+    private byte[] downloadUrl(URL toDownload) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        try {
+            byte[] chunk = new byte[4096];
+            int bytesRead;
+            InputStream stream = toDownload.openStream();
+
+            while ((bytesRead = stream.read(chunk)) > 0) {
+                outputStream.write(chunk, 0, bytesRead);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return outputStream.toByteArray();
+    }
 
     public List<CustomerDTO> getAllCustomersByManufacturer(Long manufacturerId) {
         List<CustomerDTO> toReturn = new ArrayList<>();
@@ -205,6 +223,30 @@ public class DiamondServiceImpl implements DiamondsService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean updateJewelry(String barcode, String customer, String videoUrl) throws IOException, CustomerNotFoundException {
+        Jewelry jewelry = jewelryRepository.findByBarcode(barcode);
+        if (jewelry == null) {
+            LOG.info("Jewelery was not found, adding a new one");
+            return addJewelry(barcode, customer, videoUrl);
+        }
+        jewelry.setVideo(uploadVideo(barcode, videoUrl, jewelry.getManufacturer()));
+        jewelry.setCreationDate(new Date(System.currentTimeMillis()));
+        Jewelry persistedJewelry = jewelryRepository.save(jewelry);
+        if (persistedJewelry != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private String uploadVideo(String barcode, String videoUrl, Manufacturer manufacturer) throws MalformedURLException, FileNotFoundException {
+        LOG.info("downloading video " + videoUrl);
+        byte[] videoContent = downloadUrl(new URL(videoUrl));
+        InputStream content = new ByteArrayInputStream(videoContent);
+        String amazonS3Link = amazonS3Util.uploadObjectFromFirebase(content, barcode + ".mp4", "video/mp4", s3AccessKey, s3SecretKey, s3Region, manufacturer.getName());
+        return amazonS3Link;
     }
 
     private String extractFileSuffix(String video) {

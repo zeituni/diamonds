@@ -25,35 +25,6 @@ public class AmazonS3Util {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AmazonS3Util.class);
 
-    /**
-     * Helper method to upload object to S3. Caller can pass networkId to make it as S3 folder.
-     *  @param localTempFile
-     * @param s3FileName
-     * @param s3ContentType
-     * @param s3AccessKey
-     * @param s3SecretKey
-     * @param s3Region
-     * @param s3Folder
-     */
-    public String uploadObject(InputStream localTempFile, long fileSize, String s3FileName, String s3ContentType, String s3AccessKey, String s3SecretKey, String s3Region, String s3Folder) throws FileNotFoundException {
-
-        AmazonS3 amazonS3Client = getAmazonS3Client(s3AccessKey, s3SecretKey, s3Region);
-
-        try {
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(s3ContentType);
-            objectMetadata.setContentLength(fileSize);
-
-            return upload(localTempFile, s3FileName, s3Folder, amazonS3Client, objectMetadata);
-
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            throw e;
-        } finally {
-            IOUtils.closeQuietly(localTempFile);
-        }
-    }
-
     public String uploadObjectFromFirebase(InputStream localTempFile, String s3FileName, String s3ContentType, String s3AccessKey, String s3SecretKey, String s3Region, String s3Folder) throws FileNotFoundException {
 
         AmazonS3 amazonS3Client = getAmazonS3Client(s3AccessKey, s3SecretKey, s3Region);
@@ -82,6 +53,35 @@ public class AmazonS3Util {
         LOGGER.info(String.format("video %s has been uploaded to AWS Bucket: %s ", s3FileName, "diamond-services" + "/" + key));
 
         return "diamond-services/" + key;
+    }
+
+    /**
+     * Helper method to upload object to S3. Caller can pass networkId to make it as S3 folder.
+     *  @param localTempFile
+     * @param s3FileName
+     * @param s3ContentType
+     * @param s3AccessKey
+     * @param s3SecretKey
+     * @param s3Region
+     * @param s3Folder
+     */
+    public String uploadObject(InputStream localTempFile, long fileSize, String s3FileName, String s3ContentType, String s3AccessKey, String s3SecretKey, String s3Region, String s3Folder) throws FileNotFoundException {
+
+        AmazonS3 amazonS3Client = getAmazonS3Client(s3AccessKey, s3SecretKey, s3Region);
+
+        try {
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(s3ContentType);
+            objectMetadata.setContentLength(fileSize);
+
+            return upload(localTempFile, s3FileName, s3Folder, amazonS3Client, objectMetadata);
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        } finally {
+            IOUtils.closeQuietly(localTempFile);
+        }
     }
 
     public URL generatePresignedUrl(String fileName, Long contextAccountId, Long userId, Date expiration, String contentType,
