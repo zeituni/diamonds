@@ -13,6 +13,8 @@ public class StoreConverter {
         toReturn.setState(dto.getState());
         toReturn.setLatitude(dto.getLatitude());
         toReturn.setLongitude(dto.getLongitude());
+        toReturn.setExternalId(dto.getExternalId());
+        toReturn.setStoreContact(dto.getStoreContact());
 
         return toReturn;
     }
@@ -26,6 +28,8 @@ public class StoreConverter {
         toReturn.setState(store.getState());
         toReturn.setLatitude(store.getLatitude());
         toReturn.setLongitude(store.getLongitude());
+        toReturn.setExternalId(store.getExternalId());
+        toReturn.setStoreContact(store.getStoreContact());
 
         return toReturn;
 

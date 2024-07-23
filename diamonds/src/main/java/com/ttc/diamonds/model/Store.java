@@ -13,6 +13,8 @@ public class Store {
     private String name;
     private Double latitude;
     private Double longitude;
+    private Integer externalId;
+    private String storeContact;
 
     public Double getLatitude() {
         return latitude;
@@ -72,5 +74,21 @@ public class Store {
 
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public String getStoreContact() {
+        return storeContact;
+    }
+
+    public void setStoreContact(String storeContact) {
+        this.storeContact = storeContact;
+    }
+
+    public Integer getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(Integer externalId) {
+        this.externalId = externalId;
     }
 }

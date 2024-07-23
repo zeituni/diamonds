@@ -68,11 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService)
-                .passwordEncoder(passwordEncoder());
-    }
 
     @Bean
     public JwtAuthenticationFilter authenticationTokenFilterBean() throws Exception {

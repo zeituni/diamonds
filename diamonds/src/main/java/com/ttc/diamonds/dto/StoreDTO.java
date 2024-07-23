@@ -9,6 +9,8 @@ public class StoreDTO {
     private String state;
     private Double latitude;
     private Double longitude;
+    private int externalId;
+    private String storeContact;
 
     @Override
     public boolean equals(Object o) {
@@ -72,5 +74,21 @@ public class StoreDTO {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getStoreContact() {
+        return storeContact;
+    }
+
+    public void setStoreContact(String storeContact) {
+        this.storeContact = storeContact;
+    }
+
+    public int getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(int externalId) {
+        this.externalId = externalId;
     }
 }
