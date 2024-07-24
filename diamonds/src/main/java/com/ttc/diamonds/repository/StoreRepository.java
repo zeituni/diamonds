@@ -13,4 +13,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     List<Store> findByManufacturer(Manufacturer manufacturer);
 
     Store findByManufacturerAndName(Manufacturer manufacturer, String name);
+
+    Store findByExternalId(Integer externalId);
 }

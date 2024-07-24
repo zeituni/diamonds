@@ -3,6 +3,7 @@ package com.ttc.diamonds.service;
 import com.ttc.diamonds.dto.*;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
+import com.ttc.diamonds.service.exception.StoreAlreadyExistsException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
@@ -34,4 +35,6 @@ public interface DiamondsService {
     boolean addManufacturer(String manufacturerName) throws ManufacturerAlreadyExistsException, ManufacturerAlreadyExistsException;
 
     boolean updateJewelry(String barcode, String customer, String url) throws IOException, CustomerNotFoundException;
+
+    boolean addStoreForLuna(StoreDTO store) throws StoreAlreadyExistsException;
 }

@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.ttc.diamonds.dto.JewelryDTO;
 import com.ttc.diamonds.dto.ManufacturerDTO;
+import com.ttc.diamonds.dto.StoreDTO;
 import com.ttc.diamonds.service.DiamondsService;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
+import com.ttc.diamonds.service.exception.StoreAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -149,6 +151,19 @@ public class AppController {
             return new ResponseEntity<>("{\"result_text\": \"Customer " + params.get("customer") + " wad added successfully\"}", HttpStatus.OK);
         } catch (ManufacturerAlreadyExistsException | IOException e) {
             return new ResponseEntity<>("{\"result_text\": \"" + e.getMessage() + "\"}", HttpStatus.CONFLICT);
+        }
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(method = RequestMethod.POST, value = "/addStoreForLuna")
+    public ResponseEntity<StoreDTO> addStore(@RequestBody StoreDTO store) {
+
+        try {
+            diamondsService.addStoreForLuna(store);
+
+            return new ResponseEntity<>(store, HttpStatus.OK);
+        } catch (StoreAlreadyExistsException e) {
+            return new ResponseEntity<>(store, HttpStatus.CONFLICT);
         }
     }
 }

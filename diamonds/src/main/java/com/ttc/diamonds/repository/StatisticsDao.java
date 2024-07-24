@@ -61,7 +61,7 @@ public class StatisticsDao {
     }
 
     public List<StoreStatistics> getStoreVideosSentByDate(Long manufacturerId, Long storeId, String from, String to) {
-        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total " +
+        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, externalId, null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +
                 "inner join user u on c.sales_person = u.id " +
                 "inner join store s on s.id = u.store " +
@@ -73,7 +73,7 @@ public class StatisticsDao {
     }
 
     public List<StoreStatistics> getStoreVideosSentByDateGroupedByJewelry(Long manufacturerId, Long storeId, String from, String to) {
-        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, j.id as jewelryId, j.barcode, c.creation_date, count(c.jewelry) as total " +
+        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, externalId, j.id as jewelryId, j.barcode, c.creation_date, count(c.jewelry) as total " +
                 "from customer c " +
                 "inner join user u on c.sales_person = u.id " +
                 "inner join store s on s.id = u.store " +
@@ -86,7 +86,7 @@ public class StatisticsDao {
     }
 
     public List<StoreStatistics> getAllStoresVideosSent(Long manufacturerId, String from, String to) {
-        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude,  null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total\n" +
+        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, externalId, null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total\n" +
                 "from store s\n" +
                 "inner join user u on s.id = u.store\n" +
                 "inner join customer c on c.sales_person = u.id\n" +
@@ -98,7 +98,7 @@ public class StatisticsDao {
     }
 
     public List<StoreStatistics> getAllStoresPerManufacturer(Long manufacturerId) {
-        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude,  null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total\n" +
+        String sql = "select s.id as storeId, state, city, s.name, longitude, latitude, externalId,  null as jewelryId, null as barcode, c.creation_date, count(c.jewelry) as total\n" +
                 "from store s\n" +
                 "left join user u on s.id = u.store\n" +
                 "left join customer c on c.sales_person = u.id\n" +
@@ -125,7 +125,7 @@ public class StatisticsDao {
     }
 
     public List<StoreStatistics> getBarcodePerStore(long manufacturerId, Long jewelryId, String from, String to) {
-        String sql = "select s.id as storeId, s.state, s.city, s.name, longitude, latitude,  c.jewelry as jewelryId, null as barcode, c.creation_date, count(s.id) as total\n" +
+        String sql = "select s.id as storeId, s.state, s.city, s.name, longitude, latitude, externalId,  c.jewelry as jewelryId, null as barcode, c.creation_date, count(s.id) as total\n" +
                 "from store s\n" +
                 "inner join user u on u.store = s.id\n" +
                 "inner JOIN customer c on c.sales_person = u.id\n" +

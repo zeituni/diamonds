@@ -1,11 +1,13 @@
 package com.ttc.diamonds.service;
 
+import com.google.common.base.Strings;
 import com.ttc.diamonds.dto.*;
 import com.ttc.diamonds.model.*;
 import com.ttc.diamonds.repository.*;
 import com.ttc.diamonds.service.converter.*;
 import com.ttc.diamonds.service.exception.CustomerNotFoundException;
 import com.ttc.diamonds.service.exception.ManufacturerAlreadyExistsException;
+import com.ttc.diamonds.service.exception.StoreAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,6 +241,24 @@ public class DiamondServiceImpl implements DiamondsService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean addStoreForLuna(StoreDTO storeDTO) throws StoreAlreadyExistsException {
+
+        Store store = StoreConverter.convertDtoToEntity(storeDTO);
+        if (store.getExternalId() == null) {
+            return false;
+        }
+        if (storeRepository.findByExternalId(store.getExternalId()) == null) {
+            Manufacturer luna = manufacturerRepository.findByName("LunaCollection");
+            store.setManufacturer(luna);
+            storeRepository.save(store);
+        } else {
+            throw new StoreAlreadyExistsException();
+        }
+
+        return true;
     }
 
     private String uploadVideo(String barcode, String videoUrl, Manufacturer manufacturer) throws MalformedURLException, FileNotFoundException {

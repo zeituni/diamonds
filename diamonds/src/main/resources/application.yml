@@ -17,6 +17,9 @@ server:
   uri-encoding: UTF-8 # Character encoding to use to decode the URI.
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
   servlet:
     multipart:
         max-file-size: 50MB
@@ -39,14 +42,14 @@ security:
     security-realm: Diamonds app realm
 
 diamonds:
-  host: localhost
+  host: diamonds.cuxzhrkwjjdy.us-east-1.rds.amazonaws.com
   base-url: http://${diamonds.host}:${server.port}
   datasource:
-    username:  root # Do not specify DB username here otherwise application-{env} value is not used
-    password:  1234 # Do not specify DB password here otherwise application-{env} value is not used
-    host: localhost
+    username:  ttc # Do not specify DB username here otherwise application-{env} value is not used
+    password:  TTCttc123 # Do not specify DB password here otherwise application-{env} value is not used
+    host: diamonds.cuxzhrkwjjdy.us-east-1.rds.amazonaws.com
     port: 3306
-    schema: diamonds
+    schema: test_diamonds
     jdbc-url: jdbc:mysql://${diamonds.datasource.host}:${diamonds.datasource.port}/${diamonds.datasource.schema}?autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     max-active: 10
