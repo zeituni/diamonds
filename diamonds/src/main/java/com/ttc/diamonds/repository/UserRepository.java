@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select u.* from user u inner join store s on u.store = s.id where u.manufacturer = :manufacturerId and s.state = :state and s.city = :city", nativeQuery =  true)
     List<User> getUsersByCity(@Param("manufacturerId") Long manufacturerId, @Param(value = "state") String state, @Param(value = "city") String city);
 
+    User findByEmail(String email);
 }

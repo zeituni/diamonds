@@ -44,6 +44,9 @@ public class DiamondServiceImpl implements DiamondsService {
     private StoreRepository storeRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -245,15 +248,26 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Override
     public boolean addStoreForLuna(StoreDTO storeDTO) throws StoreAlreadyExistsException {
-
-        Store store = StoreConverter.convertDtoToEntity(storeDTO);
-        if (store.getExternalId() == null) {
+        User contactPerson = null;
+        if (storeDTO.getExternalId() == 0) {
             return false;
         }
+        Manufacturer luna = manufacturerRepository.findByName("LunaCollection");
+        if (storeDTO.getStoreManager() != null) {
+           contactPerson  = userService.getUser(storeDTO.getStoreManager().getUsername());
+        }
+        if (contactPerson == null) {
+            storeDTO.getStoreManager().setStore("-1");
+            userService.addUSer(storeDTO.getStoreManager(), luna.getId());
+            contactPerson = userService.getUser(storeDTO.getStoreManager().getUsername());
+        }
+        Store store = StoreConverter.convertDtoToEntity(storeDTO, contactPerson);
+
         if (storeRepository.findByExternalId(store.getExternalId()) == null) {
-            Manufacturer luna = manufacturerRepository.findByName("LunaCollection");
             store.setManufacturer(luna);
-            storeRepository.save(store);
+            store = storeRepository.save(store);
+            storeDTO.getStoreManager().setStore(store.getId().toString());
+            userService.updateUser(storeDTO.getStoreManager(), luna.getId());
         } else {
             throw new StoreAlreadyExistsException();
         }

@@ -14,7 +14,9 @@ public class Store {
     private Double latitude;
     private Double longitude;
     private Integer externalId;
-    private String storeContact;
+    @ManyToOne
+    @JoinColumn(name = "store_contact", referencedColumnName = "id")
+    private User storeContact;
 
     public Double getLatitude() {
         return latitude;
@@ -76,11 +78,11 @@ public class Store {
         this.manufacturer = manufacturer;
     }
 
-    public String getStoreContact() {
+    public User getStoreContact() {
         return storeContact;
     }
 
-    public void setStoreContact(String storeContact) {
+    public void setStoreContact(User storeContact) {
         this.storeContact = storeContact;
     }
 

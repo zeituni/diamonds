@@ -1,5 +1,7 @@
 package com.ttc.diamonds.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class StoreDTO {
@@ -10,7 +12,8 @@ public class StoreDTO {
     private Double latitude;
     private Double longitude;
     private int externalId;
-    private String storeContact;
+    @JsonProperty("store_manager")
+    private UserDTO storeManager;
 
     @Override
     public boolean equals(Object o) {
@@ -76,12 +79,12 @@ public class StoreDTO {
         this.longitude = longitude;
     }
 
-    public String getStoreContact() {
-        return storeContact;
+    public UserDTO getStoreManager() {
+        return storeManager;
     }
 
-    public void setStoreContact(String storeContact) {
-        this.storeContact = storeContact;
+    public void setStoreManager(UserDTO storeManager) {
+        this.storeManager = storeManager;
     }
 
     public int getExternalId() {

@@ -2,10 +2,11 @@ package com.ttc.diamonds.service.converter;
 
 import com.ttc.diamonds.dto.StoreDTO;
 import com.ttc.diamonds.model.Store;
+import com.ttc.diamonds.model.User;
 
 public class StoreConverter {
 
-    public static Store convertDtoToEntity(StoreDTO dto) {
+    public static Store convertDtoToEntity(StoreDTO dto, User contactPerson) {
         Store toReturn = new Store();
         toReturn.setCity(dto.getCity());
         toReturn.setId(dto.getId());
@@ -14,7 +15,7 @@ public class StoreConverter {
         toReturn.setLatitude(dto.getLatitude());
         toReturn.setLongitude(dto.getLongitude());
         toReturn.setExternalId(dto.getExternalId());
-        toReturn.setStoreContact(dto.getStoreContact());
+        toReturn.setStoreContact(contactPerson);
 
         return toReturn;
     }
@@ -29,7 +30,7 @@ public class StoreConverter {
         toReturn.setLatitude(store.getLatitude());
         toReturn.setLongitude(store.getLongitude());
         toReturn.setExternalId(store.getExternalId());
-        toReturn.setStoreContact(store.getStoreContact());
+        toReturn.setStoreManager(UserConverter.convertEntityToDto(store.getStoreContact()));
 
         return toReturn;
 

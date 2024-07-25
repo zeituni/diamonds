@@ -1,16 +1,21 @@
 package com.ttc.diamonds.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class UserDTO {
 
     private Long id;
+    @JsonProperty(value = "first_name")
     private String firstName;
+    @JsonProperty(value = "last_name")
     private String lastName;
     private String username;
     private String password;
     private String role;
     private String store;
+    private String email;
 
     public Long getId() {
         return id;
@@ -87,4 +92,11 @@ public class UserDTO {
         return Objects.hash(id, firstName, lastName, username, password, role, store);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

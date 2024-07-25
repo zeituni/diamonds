@@ -21,6 +21,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "manufacturer", referencedColumnName = "id")
     private Manufacturer manufacturer;
+    private String email;
 
     public String getFirstName() {
         return firstName;
@@ -84,5 +85,13 @@ public class User {
 
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
