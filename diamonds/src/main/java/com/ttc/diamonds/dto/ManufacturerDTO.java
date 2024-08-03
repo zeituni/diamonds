@@ -6,6 +6,16 @@ public class ManufacturerDTO {
     private long id;
     private String name;
 
+    public long getReferencedManufacturer() {
+        return referencedManufacturer;
+    }
+
+    public void setReferencedManufacturer(long referencedManufacturer) {
+        this.referencedManufacturer = referencedManufacturer;
+    }
+
+    private long referencedManufacturer;
+
     public long getId() {
         return id;
     }
@@ -34,6 +44,6 @@ public class ManufacturerDTO {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, referencedManufacturer);
     }
 }

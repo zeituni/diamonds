@@ -127,10 +127,11 @@ public class StatisticsDao {
     public List<StoreStatistics> getBarcodePerStore(long manufacturerId, Long jewelryId, String from, String to) {
         String sql = "select s.id as storeId, s.state, s.city, s.name, longitude, latitude, externalId,  c.jewelry as jewelryId, null as barcode, c.creation_date, count(s.id) as total\n" +
                 "from store s\n" +
-                "inner join user u on u.store = s.id\n" +
-                "inner JOIN customer c on c.sales_person = u.id\n" +
+                "inner join manufacturer m on m.id = s.manufacturer\n" +
+                "inner JOIN customer c on c.sales_person = s.store_contact\n" +
                 "where c.jewelry = ?\n" +
-                "and c.manufacturer = ? \n" +
+                "and c.manufacturer = s.manufacturer \n" +
+                "and m.referenced_manufacturer = ? \n" +
                 "and c.creation_date between ? and ? \n" +
                 "group by s.id";
         return jdbcTemplate.query(sql, new Object[] {jewelryId, manufacturerId,  from, to}, new StoreStatisticsRowMapper());

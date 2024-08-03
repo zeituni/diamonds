@@ -22,6 +22,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiamondServiceImpl implements DiamondsService {
@@ -84,7 +85,19 @@ public class DiamondServiceImpl implements DiamondsService {
 
     @Override
     public List<JewelryDTO> findJewelryByManufacturer(long manufacturerId) {
-        Manufacturer manufacturer = manufacturerRepository.getOne(manufacturerId);
+        Optional<Manufacturer> manufacturerOptional = manufacturerRepository.findById(manufacturerId);
+        Manufacturer manufacturer = null;
+        if (manufacturerOptional.isEmpty()) {
+           LOG.error("Manufacturer " + manufacturerId + " was not found!");
+           return null;
+        }
+        manufacturer = manufacturerOptional.get();
+        if (manufacturer.getReferencedManufacturer() != null) {
+            LOG.info("Received a manufacturer with a reference of " + manufacturer.getReferencedManufacturer() + "; fetching it");
+            manufacturerOptional = manufacturerRepository.findById(manufacturer.getReferencedManufacturer());
+            manufacturer = manufacturerOptional.get();
+        }
+        LOG.info("Getting data of " + manufacturer.getName());
         List<Jewelry> jewelryList = jewelryRepository.findByManufacturer(manufacturer);
         if (jewelryList == null || jewelryList.size() == 0) {
             return null;
@@ -256,6 +269,12 @@ public class DiamondServiceImpl implements DiamondsService {
         if (storeDTO.getStoreManager() != null) {
            contactPerson  = userService.getUser(storeDTO.getStoreManager().getUsername());
         }
+        LOG.debug("Adding the store as a single chain to manufacturer table");
+        Manufacturer singleStoreChain = new Manufacturer();
+        singleStoreChain.setName(storeDTO.getName());
+        singleStoreChain.setReferencedManufacturer(luna.getId());
+        singleStoreChain = manufacturerRepository.save(singleStoreChain);
+
         if (contactPerson == null) {
             storeDTO.getStoreManager().setStore("-1");
             userService.addUSer(storeDTO.getStoreManager(), luna.getId());
@@ -264,7 +283,7 @@ public class DiamondServiceImpl implements DiamondsService {
         Store store = StoreConverter.convertDtoToEntity(storeDTO, contactPerson);
 
         if (storeRepository.findByExternalId(store.getExternalId()) == null) {
-            store.setManufacturer(luna);
+            store.setManufacturer(singleStoreChain);
             store = storeRepository.save(store);
             storeDTO.getStoreManager().setStore(store.getId().toString());
             userService.updateUser(storeDTO.getStoreManager(), luna.getId());

@@ -4,6 +4,8 @@ package com.ttc.diamonds.service;
 import com.ttc.diamonds.dto.StatisticsRow;
 import com.ttc.diamonds.dto.UserStatistics;
 import com.ttc.diamonds.dto.StoreStatistics;
+import com.ttc.diamonds.model.Manufacturer;
+import com.ttc.diamonds.repository.ManufacturerRepository;
 import com.ttc.diamonds.repository.StatisticsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +13,16 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
 
     @Autowired
     private StatisticsDao dao;
+
+    @Autowired
+    private ManufacturerRepository manufacturerRepository;
 
     @Override
     public List<StatisticsRow> getJewelryVideosByDate(Long jewelryId, String from, String to) {
@@ -84,6 +86,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public List<StoreStatistics> getJewelryPerStore(Long manufacturerId, Long jewelryId, String from, String to) {
+        Optional<Manufacturer> manufacturerOptional = manufacturerRepository.findById(manufacturerId);
+        Manufacturer manufacturer = manufacturerOptional.get();
         return dao.getBarcodePerStore(manufacturerId, jewelryId, from, to);
     }
 

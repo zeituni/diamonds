@@ -49,7 +49,7 @@ public class StatisticsRowMapper implements RowMapper<StatisticsRow> {
     }
 
     private String formatDate(Timestamp timestamp) {
-        DateFormat simpleDateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT);
+        DateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/YYYY");
         return simpleDateFormat.format(timestamp);
     }
 

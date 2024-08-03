@@ -11,6 +11,8 @@ public class Manufacturer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    @Column(name = "referenced_manufacturer")
+    private Long referencedManufacturer;
 
     public long getId() {
         return id;
@@ -28,4 +30,11 @@ public class Manufacturer {
         this.name = name;
     }
 
+    public Long getReferencedManufacturer() {
+        return referencedManufacturer;
+    }
+
+    public void setReferencedManufacturer(long referencedManufacturer) {
+        this.referencedManufacturer = referencedManufacturer;
+    }
 }
