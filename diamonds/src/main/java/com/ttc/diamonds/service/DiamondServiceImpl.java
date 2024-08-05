@@ -274,24 +274,39 @@ public class DiamondServiceImpl implements DiamondsService {
         singleStoreChain.setName(storeDTO.getName());
         singleStoreChain.setReferencedManufacturer(luna.getId());
         singleStoreChain = manufacturerRepository.save(singleStoreChain);
-
+        UserDTO user = cloneUser(storeDTO.getStoreManager());
         if (contactPerson == null) {
-            storeDTO.getStoreManager().setStore("-1");
-            userService.addUSer(storeDTO.getStoreManager(), luna.getId());
-            contactPerson = userService.getUser(storeDTO.getStoreManager().getUsername());
+            user.setStore("-1");
+            user.setRole("ADMIN");
+            userService.addUSer(user, singleStoreChain.getId());
+            contactPerson = userService.getUser(user.getUsername());
         }
         Store store = StoreConverter.convertDtoToEntity(storeDTO, contactPerson);
 
         if (storeRepository.findByExternalId(store.getExternalId()) == null) {
             store.setManufacturer(singleStoreChain);
             store = storeRepository.save(store);
-            storeDTO.getStoreManager().setStore(store.getId().toString());
-            userService.updateUser(storeDTO.getStoreManager(), luna.getId());
+            LOG.info("updating the store to the user");
+            user.setStore(store.getId().toString());
+            LOG.info("Updating the original password from input: " + storeDTO.getStoreManager().getPassword());
+            user.setPassword(storeDTO.getStoreManager().getPassword());
+            userService.updateUser(storeDTO.getStoreManager(), singleStoreChain.getId());
         } else {
             throw new StoreAlreadyExistsException();
         }
 
         return true;
+    }
+
+    private UserDTO cloneUser(UserDTO storeManager) {
+        UserDTO toReturn = new UserDTO();
+        toReturn.setPassword(storeManager.getPassword());
+        toReturn.setFirstName(storeManager.getFirstName());
+        toReturn.setLastName(storeManager.getLastName());
+        toReturn.setUsername(storeManager.getUsername());
+        toReturn.setRole(storeManager.getRole());
+        toReturn.setEmail(storeManager.getEmail());
+        return toReturn;
     }
 
     private String uploadVideo(String barcode, String videoUrl, Manufacturer manufacturer) throws MalformedURLException, FileNotFoundException {
