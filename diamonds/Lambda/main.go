@@ -18,6 +18,7 @@ type Request struct {
 	StoreID      string `json:"store_id"`
 	PhoneNo      string `json:"phone_no"`
 	CustomerName string `json:"customer_name"`
+	Email        string `json:"email"`
 	SKU          string `json:"sku"`
 }
 
@@ -97,10 +98,10 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
         		log.Printf("Found item %d for SKU  %s\n", jewelryId, req.SKU)
         	}
     // Insert the data into the database
-	query := "INSERT INTO customer (phone, name, manufacturer, sales_person, jewelry)\n " +
-	"VALUES (?, ?, ?, ?, ?)"
+	query := "INSERT INTO customer (phone, email, name, manufacturer, sales_person, jewelry)\n " +
+	"VALUES (?, ?, ?, ?, ?, ?)"
 
-	_, err = db.Exec(query, req.PhoneNo, req.CustomerName, manufacturer, storeContact, jewelryId)
+	_, err = db.Exec(query, req.PhoneNo, req.Email, req.CustomerName, manufacturer, storeContact, jewelryId)
 	if err != nil {
 		log.Printf("Error inserting data into database: %v", err)
 		return events.APIGatewayProxyResponse{
