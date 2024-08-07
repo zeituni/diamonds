@@ -287,10 +287,10 @@ public class DiamondServiceImpl implements DiamondsService {
             store.setManufacturer(singleStoreChain);
             store = storeRepository.save(store);
             LOG.info("updating the store to the user");
-            user.setStore(store.getId().toString());
+            user.setStore(store.getName());
             LOG.info("Updating the original password from input: " + storeDTO.getStoreManager().getPassword());
             user.setPassword(storeDTO.getStoreManager().getPassword());
-            userService.updateUser(storeDTO.getStoreManager(), singleStoreChain.getId());
+            userService.updateUser(user, singleStoreChain.getId());
         } else {
             throw new StoreAlreadyExistsException();
         }
